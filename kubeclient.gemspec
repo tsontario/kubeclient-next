@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Ruby client for interacting with kubernetes clusters"
   spec.description   = "Ruby client for interacting with kubernetes clusters"
-  spec.homepage      = "github.com/tsontario/kubeclient"
+  spec.homepage      = "https://github.com/tsontario/kubeclient"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
