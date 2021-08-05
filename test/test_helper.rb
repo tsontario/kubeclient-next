@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "kubeclient"
 
 require "byebug"
@@ -16,7 +18,7 @@ Minitest::Reporters.use!([
   Minitest::Reporters::DefaultReporter.new(
     slow_count: 10,
     detailed_skip: false,
-    verbose: ENV['VERBOSE'] == '1'
+    verbose: ENV["VERBOSE"] == "1"
   ),
 ])
 

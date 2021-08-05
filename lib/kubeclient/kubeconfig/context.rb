@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 module Kubeclient
   module Kubeconfig
     class Context
       attr_reader :name, :cluster, :namespace, :user
+
       def self.from_hash(hash)
         context = hash.fetch("context")
         new(
           name: hash.fetch("name"),
           cluster: context.fetch("cluster"),
           namespace: context.fetch("namespace", nil),
-          user: context.fetch("user"),
+          user: context.fetch("user")
         )
       end
 

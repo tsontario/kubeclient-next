@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 module Kubeclient
   module Kubeconfig
     class Cluster
       attr_reader :name, :insecure_skip_tls_verify, :certificate_authority, :server
+
       def self.from_hash(hash)
         cluster = hash.fetch("cluster")
         new(
           insecure_skip_tls_verify: cluster.fetch("insecure-skip-tls-verify", false),
           certificate_authority: cluster.fetch("certificate-authority", nil),
           server: cluster.fetch("server"),
-          name: hash.fetch("name"),
+          name: hash.fetch("name")
         )
       end
 

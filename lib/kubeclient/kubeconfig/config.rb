@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "yaml"
 require_relative "cluster"
 require_relative "context"
@@ -9,7 +10,6 @@ module Kubeclient
     class Config
       attr_reader :api_version, :kind, :preferences, :clusters, :contexts, :users, :current_context
 
-
       def self.from_hash(hash)
         new(
           api_version: hash.fetch("apiVersion"),
@@ -18,7 +18,7 @@ module Kubeclient
           clusters: hash.fetch("clusters").map { |cluster| Cluster.from_hash(cluster) },
           contexts: hash.fetch("contexts").map { |context| Context.from_hash(context) },
           users: hash.fetch("users").map { |user| User.from_hash(user) },
-          current_context: hash.fetch("current-context"),
+          current_context: hash.fetch("current-context")
         )
       rescue Psych::Exception, KeyError => e
         raise Error, e

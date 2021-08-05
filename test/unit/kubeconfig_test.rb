@@ -10,7 +10,7 @@ class KubeconfigTest < Kubeclient::TestCase
     assert_equal("Config", config.kind)
     assert_equal({ "color" => true }, config.preferences)
     assert_equal("test", config.current_context)
-    
+
     clusters = config.clusters
     assert_equal(1, clusters.length)
     cluster = clusters.first
