@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "kubeclient-next"
+require "kubeclient_next"
 
 require "byebug"
 require "minitest/autorun"

@@ -3,7 +3,7 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
 
-task :default => ["test"]
+task default: ["test"]
 
 desc("Run test suite")
 Rake::TestTask.new(:test) do |t|

@@ -13,6 +13,8 @@ module KubeclientNext
           server: cluster.fetch("server"),
           name: hash.fetch("name")
         )
+      rescue Psych::Exception, KeyError => e
+        raise Error, e
       end
 
       def initialize(name:, insecure_skip_tls_verify:, certificate_authority:, server:)

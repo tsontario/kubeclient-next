@@ -13,6 +13,8 @@ module KubeclientNext
           namespace: context.fetch("namespace", nil),
           user: context.fetch("user")
         )
+      rescue Psych::Exception, KeyError => e
+        raise Error, e
       end
 
       def initialize(name:, cluster:, namespace:, user:)

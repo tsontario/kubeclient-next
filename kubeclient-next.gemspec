@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require_relative "lib/kubeclient-next/version"
+require_relative "lib/kubeclient_next/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "kubeclient-next"
+  spec.name          = "kubeclient_next"
   spec.version       = KubeclientNext::VERSION
   spec.authors       = ["Timothy Smith"]
   spec.email         = ["tsontario@gmail.com"]
 
   spec.summary       = "Ruby client for interacting with kubernetes clusters"
   spec.description   = "Ruby client for interacting with kubernetes clusters"
-  spec.homepage      = "https://github.com/tsontario/kubeclient-next"
+  spec.homepage      = "https://github.com/tsontario/kubeclient_next"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"

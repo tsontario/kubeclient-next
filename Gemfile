@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in kubeclient-next.gemspec
+# Specify your gem's dependencies in kubeclient_next.gemspec
 gemspec
 
 gem "rake", "~> 13.0"
