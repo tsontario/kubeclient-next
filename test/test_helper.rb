@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "kubeclient"
+require "kubeclient-next"
 
 require "byebug"
 require "minitest/autorun"
@@ -22,7 +22,7 @@ Minitest::Reporters.use!([
   ),
 ])
 
-module Kubeclient
+module KubeclientNext
   class TestCase < ::Minitest::Test
     def run
       WebMock.disable_net_connect!

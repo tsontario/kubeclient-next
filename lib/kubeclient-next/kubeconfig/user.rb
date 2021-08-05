@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Kubeclient
+module KubeclientNext
   module Kubeconfig
     class User
       def self.from_hash(_hash)

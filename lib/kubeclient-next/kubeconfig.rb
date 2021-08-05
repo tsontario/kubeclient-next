@@ -2,7 +2,7 @@
 
 require_relative "kubeconfig/config"
 
-module Kubeclient
+module KubeclientNext
   module Kubeconfig
     Error = Class.new(RuntimeError)
 

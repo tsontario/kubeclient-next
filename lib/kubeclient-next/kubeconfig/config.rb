@@ -5,7 +5,7 @@ require_relative "cluster"
 require_relative "context"
 require_relative "user"
 
-module Kubeclient
+module KubeclientNext
   module Kubeconfig
     class Config
       attr_reader :api_version, :kind, :preferences, :clusters, :contexts, :users, :current_context
