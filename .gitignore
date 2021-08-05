@@ -9,3 +9,6 @@
 
 # Ignore lockfile for gem
 Gemfile.lock
+
+# debug logs
+.byebug_history
