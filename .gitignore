@@ -7,6 +7,9 @@
 /spec/reports/
 /tmp/
 
+# Rake-able scratch working directory
+/scratch
+
 # Ignore lockfile for gem
 Gemfile.lock
 
