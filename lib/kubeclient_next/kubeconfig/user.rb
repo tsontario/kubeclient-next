@@ -1,14 +1,22 @@
 # frozen_string_literal: true
+require_relative "auth_info"
 
 module KubeclientNext
   module Kubeconfig
     class User
-      def self.from_hash(_hash)
-        new
+      attr_reader :name, :auth_info
+
+      def self.from_hash(hash)
+        user = hash.fetch("user")
+        new(
+          name: hash.fetch("name"),
+          auth_info: AuthInfo.from_hash(user)
+        )
       end
 
-      def initialize
-        # TODO
+      def initialize(name:, auth_info:)
+        @name = name
+        @auth_info = auth_info
       end
     end
   end

@@ -30,8 +30,8 @@ module KubeclientNext
       super
     end
 
-    def kubeconfig_fixture_path(name)
-      File.expand_path(File.join("fixtures", "kubeconfig", "#{name}.yml"), __dir__)
+    def kubeconfig_fixture_path(name, sub_dir: "")
+      File.expand_path(File.join("fixtures", "kubeconfig", sub_dir, "#{name}.yml"), __dir__)
     end
   end
 end

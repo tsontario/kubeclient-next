@@ -1,0 +1,15 @@
+client-certificate: "test-client-certificate"
+client-certificate-data: "test-client-certificate-data"
+client-key: "test-client-key"
+client-key-data: "test-client-key-data"
+token: "test-token"
+tokenFile: "test-token-file"
+as: "test-as"
+as-groups: ["test-group"]
+as-user-extra:
+  test-key: test-value
+username: "test-username"
+password: "test-password"
+auth-provider: "test-auth-provider"
+exec: "test-exec"
+extensions: "test-extensions"
