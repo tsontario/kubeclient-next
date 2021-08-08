@@ -8,6 +8,9 @@ require_relative "user"
 module KubeclientNext
   module Kubeconfig
     class Config
+      ContextNotFoundError = Class.new(Error)
+      ClusterNotFoundError = Class.new(Error)
+
       attr_reader :api_version, :kind, :preferences, :clusters, :contexts, :users, :current_context
 
       def self.from_hash(hash)
@@ -32,6 +35,33 @@ module KubeclientNext
         @contexts = contexts
         @users = users
         @current_context = current_context
+      end
+
+      def context(name)
+        context = contexts.find { |c| c.name == name }
+        raise ContextNotFoundError, "Could not find context #{name} in config" unless context
+        context
+      end
+
+      def cluster(name)
+        cluster = clusters.find { |c| c.name == name }
+        raise ClusterNotFoundError, "Could not find cluster #{name} in config" unless cluster
+        cluster
+      end
+
+      def user(name)
+        user = users.find { |user| user.name == name }
+        raise UserNotFoundError, "User #{name} not found in config" unless user
+        user
+      end
+
+      def cluster_for_context(context_name)
+        cluster_name = context(context_name).cluster
+        cluster(cluster_name)
+      end
+
+      def user_for_context(context_name)
+        user(context(context_name).user)
       end
     end
   end

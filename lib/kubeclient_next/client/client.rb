@@ -2,16 +2,27 @@
 require_relative "rest_client"
 
 module KubeclientNext
-  module Clients
+  module Client
     class Client
+      ContextNotFoundError = Class.new(Error)
+
       attr_reader :config
-      attr_accessor :context, :group, :version
+      attr_accessor :group, :version
 
       def initialize(config:, context: nil, group: nil, version: nil)
         @config = config
-        @context = context
+        @context = config.context(context) if context
         @group = group
         @version = version
+      end
+
+      def context
+        @context ||= config.contexts.first
+      end
+
+      def context=(context_name)
+        @context = config.contexts.find { |context| context.name == context_name }
+        raise ContextNotFoundError, "Could not find context #{context_name} in config" unless @context
       end
 
       def get_events(namespace: @context.namespace)
@@ -20,7 +31,7 @@ module KubeclientNext
         # For now, however, we're going to build the simplest thing we can: explicitly getting a single resource.
         # rest_client = RESTClientFactory.client_for(group: @group, version: @version)
         # rest_client_for()
-        rest_client = RESTClient.new(url: config.clusters.first.server, group: nil, version: "v1")
+        rest_client = RESTClient.new(config: config, context: "kind-kind", group: nil, version: "v1")
         response = rest_client.get_events(namespace: "default")
         puts response
       end
