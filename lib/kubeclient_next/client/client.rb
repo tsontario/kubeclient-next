@@ -21,8 +21,7 @@ module KubeclientNext
       end
 
       def context=(context_name)
-        @context = config.contexts.find { |context| context.name == context_name }
-        raise ContextNotFoundError, "Could not find context #{context_name} in config" unless @context
+        @context = config.context(context_name)
       end
 
       def get_events(namespace: @context.namespace)
