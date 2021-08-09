@@ -9,7 +9,7 @@ contexts:
 - context:
     cluster: test-cluster
     namespace: test-ns
-    user: test-user
+    user: bogus
   name: test
 current-context: test
 kind: Config

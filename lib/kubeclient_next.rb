@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
-require "kubeclient_next/error"
-require "kubeclient_next/version"
-require "kubeclient_next/kubeconfig"
+require_relative "kubeclient_next/error"
+require_relative "kubeclient_next/version"
+require_relative "kubeclient_next/kubeconfig"
+require_relative "kubeclient_next/client"

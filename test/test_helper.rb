@@ -16,8 +16,6 @@ Mocha.configure do |c|
   c.stubbing_non_public_method = :prevent
 end
 
-
-
 Minitest::Reporters.use!([
   Minitest::Reporters::DefaultReporter.new(
     slow_count: 10,
@@ -32,6 +30,13 @@ module KubeclientNext
       WebMock.disable_net_connect!
       yield if block_given?
       super
+    end
+
+    def config_fixture(fixture = "simple")
+      @config ||= begin
+        fixture_file = File.open(kubeconfig_fixture_path(fixture))
+        KubeclientNext::Kubeconfig.from_file(fixture_file)
+      end
     end
 
     def kubeconfig_fixture_path(name, sub_dir: "")

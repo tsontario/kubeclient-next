@@ -7,7 +7,7 @@ clusters:
   name: test-cluster
 contexts:
 - context:
-    cluster: test-cluster
+    cluster: bogus-cluster
     namespace: test-ns
     user: test-user
   name: test
@@ -19,4 +19,4 @@ users:
 - name: test-user
   user:
     password: some-password
-    username: some-username
+    username: exp
