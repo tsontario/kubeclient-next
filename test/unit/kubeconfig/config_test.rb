@@ -41,15 +41,6 @@ module KubeclientNext
         config = config_fixture("mismatched_user_context")
         assert_raises(Config::UserNotFoundError) { config.user_for_context("test") }
       end
-
-      private
-
-      def config_fixture(fixture = "simple")
-        @config ||= begin
-          fixture_file = File.open(kubeconfig_fixture_path(fixture))
-          KubeclientNext::Kubeconfig.from_file(fixture_file)
-        end
-      end
     end
   end
 end

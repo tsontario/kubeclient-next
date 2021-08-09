@@ -12,7 +12,6 @@ module KubeclientNext
         @context = context
         @group = group
         @version = version
-        @connection = Faraday::Connection.new(endpoint)
 
         cert_store = OpenSSL::X509::Store.new
         cert_store.add_cert(OpenSSL::X509::Certificate.new(Base64.decode64(cluster.certificate_authority_data)))
@@ -26,16 +25,17 @@ module KubeclientNext
         )
       end
 
-      def get_events(namespace:)
-        @connection.get("events")
+      def get_namespaces
+        @connection.get("namespaces")
       end
 
       private
 
       attr_reader :config, :context, :connection
 
+      # Core/v1 resources are in `/api/#{version}`. In general, all other resources are found in `/apis/GROUP/VERSION`
       def endpoint
-        @endpoint ||= group ? URI.join(host, @group, @version) : URI.join(host, @version)
+        @endpoint ||= group ? URI.join(host, @group, @version) : URI.join(host, "/api/#{version}")
       end
 
       def host

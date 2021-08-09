@@ -21,8 +21,8 @@ module KubeclientNext
           preferences: hash.fetch("preferences"),
           clusters: hash.fetch("clusters").map { |cluster| Cluster.from_hash(cluster) },
           contexts: hash.fetch("contexts").map { |context| Context.from_hash(context) },
+          current_context: hash.fetch("current-context"),
           users: hash.fetch("users").map { |user| User.from_hash(user) },
-          current_context: hash.fetch("current-context")
         )
       rescue Psych::Exception, KeyError => e
         raise Error, e
