@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require "simplecov"
+SimpleCov.start
 
 require "kubeclient_next"
 
@@ -13,6 +15,8 @@ Mocha.configure do |c|
   c.stubbing_non_existent_method = :prevent
   c.stubbing_non_public_method = :prevent
 end
+
+
 
 Minitest::Reporters.use!([
   Minitest::Reporters::DefaultReporter.new(

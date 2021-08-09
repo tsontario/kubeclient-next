@@ -7,7 +7,7 @@ module KubeclientNext
     Error = Class.new(Error)
 
     def self.from_file(file)
-      hash = YAML.safe_load(file.read, [Date, Time])
+      hash = YAML.safe_load(file.read, permitted_classes: [Date, Time])
       Config.from_hash(hash)
     end
   end
