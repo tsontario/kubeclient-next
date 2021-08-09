@@ -24,9 +24,22 @@ module KubeclientNext
         assert_raises(Config::ContextNotFoundError) { config_fixture.cluster_for_context("bogus") }
       end
 
-      def test_cluster_for_cluster_raises_context_not_found_error_when_given_non_existent_context
+      def test_cluster_for_context_raises_cluster_not_found_error_when_given_non_existent_context
         config = config_fixture("mismatched_cluster_context")
         assert_raises(Config::ClusterNotFoundError) { config.cluster_for_context("test") }
+      end
+
+      def test_user_for_context
+        assert_equal("test-user", config_fixture.user_for_context("test").name)
+      end
+
+      def test_user_for_context_raises_context_not_found_error_when_given_non_existent_context
+        assert_raises(Config::ContextNotFoundError) { config_fixture.user_for_context("bogus") }
+      end
+
+      def test_user_for_context_raises_user_not_found_error_when_no_matching_user_record_found_for_context
+        config = config_fixture("mismatched_user_context")
+        assert_raises(Config::UserNotFoundError) { config.user_for_context("test") }
       end
 
       private

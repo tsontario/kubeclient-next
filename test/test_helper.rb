@@ -16,8 +16,6 @@ Mocha.configure do |c|
   c.stubbing_non_public_method = :prevent
 end
 
-
-
 Minitest::Reporters.use!([
   Minitest::Reporters::DefaultReporter.new(
     slow_count: 10,

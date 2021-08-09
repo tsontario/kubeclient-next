@@ -10,6 +10,7 @@ module KubeclientNext
     class Config
       ContextNotFoundError = Class.new(Error)
       ClusterNotFoundError = Class.new(Error)
+      UserNotFoundError = Class.new(Error)
 
       attr_reader :api_version, :kind, :preferences, :clusters, :contexts, :users, :current_context
 
