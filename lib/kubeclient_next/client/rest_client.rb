@@ -27,7 +27,6 @@ module KubeclientNext
       end
 
       def get_events(namespace:)
-        # TODO: endpoint is not correct (not using `/api` path)
         @connection.get("events")
       end
 
