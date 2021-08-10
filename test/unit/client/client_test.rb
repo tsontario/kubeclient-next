@@ -6,7 +6,7 @@ module KubeclientNext
   module Client
     class ClientTest < KubeclientNext::TestCase
       def setup
-        @client = Client.new(config: config_fixture)
+        @client = Client.new(config: config_fixture, context: config_fixture.current_context)
       end
 
       def test_client_context_uses_first_context_if_not_explicitly_set_in_constructor
@@ -14,7 +14,7 @@ module KubeclientNext
       end
 
       def test_context_setter_raises_if_non_existent_context_given
-        assert_raises(Kubeconfig::Config::ContextNotFoundError) { @client.context = "bogus" }
+        assert_raises(Kubeconfig::Config::ContextNotFoundError) { @client.set_context("bogus") }
       end
     end
   end

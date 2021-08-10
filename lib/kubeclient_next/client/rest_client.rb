@@ -25,8 +25,8 @@ module KubeclientNext
         )
       end
 
-      def get_namespaces
-        @connection.get("namespaces")
+      def get(path = nil)
+        @connection.get(path)
       end
 
       private
@@ -35,7 +35,12 @@ module KubeclientNext
 
       # Core/v1 resources are in `/api/#{version}`. In general, all other resources are found in `/apis/GROUP/VERSION`
       def endpoint
-        @endpoint ||= group ? URI.join(host, @group, @version) : URI.join(host, "/api/#{version}")
+        @endpoint ||= if group == "core"
+          URI.join(host,
+            "/api/#{version}")
+        else
+          URI.join(host, "/apis/#{@group}/#{@version}")
+        end
       end
 
       def host
