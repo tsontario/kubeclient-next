@@ -25,13 +25,8 @@ module KubeclientNext
         )
       end
 
-      # TODO: this is worthy of a comment... dealing with weird URI.join behaviour
       def get(sub_path = "")
-        if !sub_path.empty? && !path.end_with?("/")
-          @connection.get(URI.join(host, "#{path}/", sub_path))
-        else
-          @connection.get(URI.join(host, path, sub_path))
-        end
+        @connection.get(formatted_uri(host, path, sub_path))
       end
 
       private
@@ -48,6 +43,14 @@ module KubeclientNext
 
       def user
         config.user_for_context(context)
+      end
+
+      def formatted_uri(host, path, sub_path = "")
+        if !sub_path.empty? && !path.end_with?("/")
+          URI.join(host, "#{path}/", sub_path)
+        else
+          URI.join(host, path, sub_path)
+        end
       end
     end
   end

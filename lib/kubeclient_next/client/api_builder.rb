@@ -10,9 +10,16 @@ module KubeclientNext
     class APIBuilder < Module
       METHOD_PREFIXES = ["get"] # watch delete create update patch json_patch merge_patch apply).freeze
 
+      attr_reader :api, :client
+
       # TODO: bad name, perhaps class method with better intention...
       def initialize(api:, client:)
         super()
+        @api = api
+        @client = client
+      end
+
+      def build!
         rest_client = RESTClient.new(config: client.config, context: client.context.name,
           path: api.path)
         response = rest_client.get
@@ -34,7 +41,7 @@ module KubeclientNext
         end
       end
 
-      # TODO: handle response errors
+      # TODO: handle response errors (do this in RESTClient...)
       # TODO: handle ArgumentErrors for expected kwargs for each type of method
       # TODO: what kind of objects to return:
       #   (Recursive Open Struct or user-provided class that supports unmarshalling?)
