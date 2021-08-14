@@ -14,7 +14,7 @@ module KubeclientNext
         GroupVersion.new(group: "apps", version: "v1"),
       ]
 
-      attr_reader :config, :context
+      attr_reader :config, :context, :apis
 
       def initialize(config:, context:, group_versions: DEFAULT_GROUP_VERSIONS)
         @config = config
@@ -29,10 +29,6 @@ module KubeclientNext
       def set_context(context_name)
         @context = config.context(context_name)
       end
-
-      private
-
-      attr_reader :apis
     end
   end
 end

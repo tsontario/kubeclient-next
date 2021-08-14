@@ -19,6 +19,15 @@ module KubeclientNext
       def discovered?
         @discovered
       end
+
+      # Core/v1 resources are in `/api/#{version}`. In general, all other resources are found in `/apis/GROUP/VERSION`
+      def path
+        @path ||= if group == "core"
+          "/api/#{version}"
+        else
+          "/apis/#{group}/#{version}"
+        end
+      end
     end
   end
 end
