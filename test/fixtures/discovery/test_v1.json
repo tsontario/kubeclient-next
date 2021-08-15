@@ -1,0 +1,16 @@
+{
+  "kind": "APIResourceList",
+  "groupVersion": "v1",
+  "resources": [
+    {
+      "name": "testresources",
+      "singularName": "",
+      "namespaced": true,
+      "kind": "TestResource",
+      "verbs": [
+        "get",
+        "list"
+      ]
+    }
+  ]
+}

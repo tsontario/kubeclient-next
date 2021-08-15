@@ -6,6 +6,7 @@ module KubeclientNext
   module Client
     class ClientTest < KubeclientNext::TestCase
       def setup
+        super
         @client = Client.new(config: config_fixture, context: config_fixture.current_context)
       end
 
