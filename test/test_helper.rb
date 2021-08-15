@@ -13,7 +13,6 @@ require "webmock/minitest"
 Mocha.configure do |c|
   c.stubbing_method_unnecessarily = :prevent
   c.stubbing_non_existent_method = :prevent
-  c.stubbing_non_public_method = :prevent
 end
 
 Minitest::Reporters.use!([
@@ -33,10 +32,8 @@ module KubeclientNext
     end
 
     def config_fixture(fixture = "simple")
-      @config ||= begin
-        fixture_file = File.open(kubeconfig_fixture_path(fixture))
-        KubeclientNext::Kubeconfig.from_file(fixture_file)
-      end
+      fixture_file = File.open(kubeconfig_fixture_path(fixture))
+      KubeclientNext::Kubeconfig.from_file(fixture_file)
     end
 
     def kubeconfig_fixture_path(name, sub_dir: "")

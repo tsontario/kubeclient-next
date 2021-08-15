@@ -6,7 +6,7 @@ module KubeclientNext
     Error = Class.new(Error)
 
     def self.from_config(config)
-      Client.new(config: config)
+      Client.new(config: config, context: config.current_context)
     end
   end
 end
