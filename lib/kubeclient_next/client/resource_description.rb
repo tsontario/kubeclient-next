@@ -1,8 +1,11 @@
 # frozen_string_literal: true
+
 module KubeclientNext
   module Client
     class ResourceDescription
       attr_reader :name, :kind, :namespaced, :verbs
+      alias_method(:plural_name, :name)
+
       def self.from_hash(hash)
         new(
           name: hash.fetch("name"),
@@ -29,23 +32,19 @@ module KubeclientNext
         end
       end
 
-      def plural_name
-        name
-      end
-
       def subresource?
         name.include?("/") # E.g. namespaces/status, deployments/scale, etc.
       end
 
-      def path_for_resources(namespace:)
+      def path_for_resources(namespace: nil)
         if namespace
           "namespaces/#{namespace}/#{plural_name}"
         else
-          plural_name.to_s
+          plural_name
         end
       end
 
-      def path_for_resource(namespace:, name:)
+      def path_for_resource(namespace: nil, name:)
         "#{path_for_resources(namespace: namespace)}/#{name}"
       end
     end
