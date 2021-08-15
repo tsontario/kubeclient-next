@@ -17,8 +17,21 @@ module KubeclientNext
         hardcoded_auth
       end
 
+      def post(sub_path = "", data:)
+        byebug
+        connection.post(formatted_uri(host, path, sub_path), data, { "Content-Type" => "application/json" })
+      end
+
       def get(sub_path = "")
         connection.get(formatted_uri(host, path, sub_path))
+      end
+
+      def put(sub_path = "", data:)
+        connection.put(formatted_uri(host, path, sub_path), data, { "Content-Type" => "application/json" })
+      end
+
+      def delete(sub_path = "")
+        connection.delete(formatted_uri(host, path, sub_path))
       end
 
       private

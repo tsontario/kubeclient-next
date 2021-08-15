@@ -27,8 +27,11 @@ module KubeclientNext
         resource_descriptions.each do |resource_description|
           next if resource_description.subresource?
 
+          define_create_resource(client, rest_client, resource_description)
           define_get_resources(client, rest_client, resource_description)
           define_get_resource(client, rest_client, resource_description)
+          define_update_resource(client, rest_client, resource_description)
+          define_delete_resource(client, rest_client, resource_description)
         end
       end
 
@@ -39,6 +42,14 @@ module KubeclientNext
       # TODO: what kind of objects to return:
       #   (Recursive Open Struct or user-provided class that supports unmarshalling?)
       # TODO: register method names in APIs and check to avoid conflicts (we assume this will be a rarity)
+      def define_create_resource(client, rest_client, resource_description)
+        client.define_singleton_method("create_#{resource_description.singular_name}".to_sym) do |kwargs = {}|
+          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+          data = kwargs.fetch(:data)
+          rest_client.post(resource_description.path_for_resources(namespace: namespace), data: JSON.dump(data))
+        end
+      end
+
       def define_get_resources(client, rest_client, resource_description)
         client.define_singleton_method("get_#{resource_description.plural_name}".to_sym) do |kwargs = {}|
           namespace = kwargs.fetch(:namespace) if resource_description.namespaced
@@ -51,6 +62,24 @@ module KubeclientNext
           namespace = kwargs.fetch(:namespace) if resource_description.namespaced
           name = kwargs.fetch(:name)
           rest_client.get(resource_description.path_for_resource(namespace: namespace, name: name))
+        end
+      end
+
+      def define_update_resource(client, rest_client, resource_description)
+        client.define_singleton_method("update_#{resource_description.singular_name}".to_sym) do |kwargs = {}|
+          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+          name = kwargs.fetch(:name)
+          data = kwargs.fetch(:data)
+          rest_client.put(resource_description.path_for_resource(namespace: namespace, name: name),
+            data: JSON.dump(data))
+        end
+      end
+
+      def define_delete_resource(client, rest_client, resource_description)
+        client.define_singleton_method("delete_#{resource_description.singular_name}".to_sym) do |kwargs = {}|
+          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+          name = kwargs.fetch(:name)
+          rest_client.delete(resource_description.path_for_resource(namespace: namespace, name: name))
         end
       end
     end
