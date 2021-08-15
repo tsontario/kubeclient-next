@@ -8,12 +8,24 @@ module KubeclientNext
     class RESTClient
       attr_reader :context, :path
 
-      def initialize(config:, context:, path:)
+      def initialize(config:, context:, path: "")
         @config = config
         @context = context
         @path = path
 
         # TODO: generically handle auth depending on provided config
+        hardcoded_auth
+      end
+
+      def get(sub_path = "")
+        connection.get(formatted_uri(host, path, sub_path))
+      end
+
+      private
+
+      attr_reader :config, :connection
+
+      def hardcoded_auth
         cert_store = OpenSSL::X509::Store.new
         cert_store.add_cert(OpenSSL::X509::Certificate.new(Base64.decode64(cluster.certificate_authority_data)))
         @connection = Faraday.new(
@@ -25,14 +37,6 @@ module KubeclientNext
           }
         )
       end
-
-      def get(sub_path = "")
-        @connection.get(formatted_uri(host, path, sub_path))
-      end
-
-      private
-
-      attr_reader :config, :connection
 
       def host
         cluster.server
