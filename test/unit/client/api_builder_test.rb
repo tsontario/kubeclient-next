@@ -11,14 +11,11 @@ module KubeclientNext
       end
 
       def test_build!
-        stubs = Faraday::Adapter::Test::Stubs.new
         mock_connection = Faraday.new do |builder|
-          builder.adapter(:test, stubs) do |stub|
+          builder.adapter(:test, Faraday::Adapter::Test::Stubs.new) do |stub|
             stub.get("https://1.2.3.4/apis/test/v1") { |_env| [200, {}, discovery_response_fixture("test_v1")] }
           end
         end
-        # mock_rest_client = mock.responds_like_instance_of(RESTClient)
-        # mock_rest_client.expects(:get).returns(discovery_response_fixture("test_v1"))
         RESTClient.any_instance.expects(:connection).returns(mock_connection)
 
         api = API.new(group_version: GroupVersion.new(group: "test", version: "v1"))
@@ -33,7 +30,7 @@ module KubeclientNext
 
       private
 
-      # Return raw JSON strings as that's what we expect to receive in production
+      # Use raw JSON strings as that's what we expect to receive in production
       def discovery_response_fixture(name)
         File.read(discovery_response_fixture_path(name))
       end
