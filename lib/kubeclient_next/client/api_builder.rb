@@ -10,6 +10,14 @@ module KubeclientNext
     class APIBuilder < Module
       attr_reader :api, :client
 
+      VERBS_TO_METHODS = {
+        create: :define_create_resource,
+        get: :define_get_resource,
+        list: :define_get_resources,
+        update: :define_update_resource,
+        delete: :define_delete_resource,
+      }
+
       def initialize(api:, client:)
         super()
         @api = api
@@ -27,11 +35,9 @@ module KubeclientNext
         resource_descriptions.each do |resource_description|
           next if resource_description.subresource?
 
-          define_create_resource(client, rest_client, resource_description)
-          define_get_resources(client, rest_client, resource_description)
-          define_get_resource(client, rest_client, resource_description)
-          define_update_resource(client, rest_client, resource_description)
-          define_delete_resource(client, rest_client, resource_description)
+          VERBS_TO_METHODS
+            .filter { |verb, _method| resource_description.has_verb?(verb) }
+            .each { |_, method| send(method, client, rest_client, resource_description) }
         end
       end
 
