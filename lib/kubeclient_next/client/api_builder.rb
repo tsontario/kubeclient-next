@@ -41,14 +41,14 @@ module KubeclientNext
       # TODO: register method names in APIs and check to avoid conflicts (we assume this will be a rarity)
       def define_get_resources(client, rest_client, resource_description)
         client.define_singleton_method("get_#{resource_description.plural_name}".to_sym) do |kwargs = {}|
-          namespace = kwargs[:namespace] if resource_description.namespaced
+          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
           rest_client.get(resource_description.path_for_resources(namespace: namespace))
         end
       end
 
       def define_get_resource(client, rest_client, resource_description)
         client.define_singleton_method("get_#{resource_description.singular_name}".to_sym) do |kwargs = {}|
-          namespace = kwargs[:namespace] if resource_description.namespaced
+          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
           name = kwargs.fetch(:name)
           rest_client.get(resource_description.path_for_resource(namespace: namespace, name: name))
         end
