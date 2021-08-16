@@ -17,20 +17,26 @@ module KubeclientNext
         hardcoded_auth
       end
 
-      def post(sub_path = "", data:)
-        byebug
-        connection.post(formatted_uri(host, path, sub_path), data, { "Content-Type" => "application/json" })
+      def post(sub_path = "", data:, headers: {})
+        headers = { "Content-Type" => "application/json" }.merge(headers)
+        connection.post(formatted_uri(host, path, sub_path), data, headers)
       end
 
-      def get(sub_path = "")
+      def get(sub_path = "", headers: {})
         connection.get(formatted_uri(host, path, sub_path))
       end
 
-      def put(sub_path = "", data:)
-        connection.put(formatted_uri(host, path, sub_path), data, { "Content-Type" => "application/json" })
+      def put(sub_path = "", data:, headers: {})
+        headers = { "Content-Type" => "application/json" }.merge(headers)
+        connection.put(formatted_uri(host, path, sub_path), data, headers)
       end
 
-      def delete(sub_path = "")
+      def patch(sub_path="", stategy:, data:, headers: {})
+        headers = { "Content-Type" => content_type_for_patch_strategy(strategy) }.merge(headers)
+        connection.patch(formatted_uri(host, path, sub_path), data, headers)
+      end
+
+      def delete(sub_path = "", headers: {})
         connection.delete(formatted_uri(host, path, sub_path))
       end
 
@@ -68,6 +74,17 @@ module KubeclientNext
           URI.join(host, "#{path}/", sub_path)
         else
           URI.join(host, path, sub_path)
+        end
+      end
+
+      def content_type_for_patch_strategy(strategy)
+        case strategy
+        when :strategic_merge
+          "application/strategic-merge-patch+json"
+        when :merge
+          "application/merge-patch+json"
+        when :json
+          "application/json-patch+json"
         end
       end
     end
