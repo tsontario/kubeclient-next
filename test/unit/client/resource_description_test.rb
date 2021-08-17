@@ -23,7 +23,7 @@ module KubeclientNext
         assert_equal("configmap", resource_description.singular_name)
         assert(resource_description.namespaced)
         assert_equal(kind, resource_description.kind)
-        assert_equal(verbs, resource_description.verbs)
+        assert_equal(verbs.map(&:to_sym), resource_description.verbs)
       end
 
       def test_singular_name_uses_singular_name_field_when_present
@@ -45,6 +45,14 @@ module KubeclientNext
         subresource = ResourceDescription.from_hash(resource_description_fixture("serviceaccounts-token"))
         refute(not_a_subresource.subresource?)
         assert(subresource.subresource?)
+      end
+
+      def test_has_verb?
+        hash = YAML.load_file(resource_description_fixture_path("serviceaccounts-token"))
+        assert_equal(["create"], hash.fetch("verbs"))
+        resource = ResourceDescription.from_hash(hash)
+        assert(resource.has_verb?(:create))
+        refute(resource.has_verb?(:bogus))
       end
 
       def test_path_for_resources

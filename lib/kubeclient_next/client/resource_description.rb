@@ -12,7 +12,7 @@ module KubeclientNext
           kind: hash.fetch("kind"),
           singular_name: hash.fetch("singularName"),
           namespaced: hash.fetch("namespaced"),
-          verbs: hash.fetch("verbs"),
+          verbs: hash.fetch("verbs").map(&:to_sym),
         )
       end
 
@@ -34,6 +34,10 @@ module KubeclientNext
 
       def subresource?
         name.include?("/") # E.g. namespaces/status, deployments/scale, etc.
+      end
+
+      def has_verb?(verb)
+        verbs.include?(verb)
       end
 
       def path_for_resources(namespace: nil)
