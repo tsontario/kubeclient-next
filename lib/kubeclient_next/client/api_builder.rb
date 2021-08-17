@@ -92,12 +92,14 @@ module KubeclientNext
       end
 
       def define_patch_resource(client, rest_client, resource_description)
+        # Lexically scope this method in the block to make it available inside the closure when invoked by client
+        scoped_content_type_for_patch_strategy = proc { |strategy| content_type_for_patch_strategy(strategy) }
         client.define_singleton_method("patch_#{resource_description.singular_name}".to_sym) do |kwargs = {}|
           namespace = kwargs.fetch(:namespace) if resource_description.namespaced
           name = kwargs.fetch(:name)
           data = kwargs.fetch(:data)
           strategy = kwargs.fetch(:strategy)
-          headers = kwargs.fetch(:headers, {}).merge(content_type_for_patch_strategy(strategy))
+          headers = kwargs.fetch(:headers, {}).merge(scoped_content_type_for_patch_strategy.call(strategy))
           rest_client.patch(resource_description.path_for_resource(namespace: namespace, name: name),
             strategy: strategy, data: JSON.dump(data), headers: headers)
         end
@@ -118,16 +120,14 @@ module KubeclientNext
         end
       end
 
-      # This may not actually be available in the singleton method since it is not part of the closure.
-      # It may make more sense to throw this in a 'utils' type of module
       def content_type_for_patch_strategy(strategy)
         case strategy
         when :json
-          "application/json-patch+json"
+          { "Content-Type": "application/json-patch+json" }
         when :merge
-          "application/merge-patch+json"
+          { "Content-Type": "application/merge-patch+json" }
         when :strategic_merge
-          "application/strategic-merge-patch+json"
+          { "Content-Type": "application/strategic-merge-patch+json" }
         else
           raise ArgumentError, "unknown patch strategy: #{strategy}. Acceptable strategies are" \
             " :json, :merge, or :strategic_merge"
