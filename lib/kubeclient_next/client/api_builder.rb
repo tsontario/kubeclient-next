@@ -118,6 +118,8 @@ module KubeclientNext
         end
       end
 
+      # This may not actually be available in the singleton method since it is not part of the closure.
+      # It may make more sense to throw this in a 'utils' type of module
       def content_type_for_patch_strategy(strategy)
         case strategy
         when :json
@@ -128,7 +130,7 @@ module KubeclientNext
           "application/strategic-merge-patch+json"
         else
           raise ArgumentError, "unknown patch strategy: #{strategy}. Acceptable strategies are" \
-            " :apply, :json, :merge, or :strategic_merge"
+            " :json, :merge, or :strategic_merge"
         end
       end
     end
