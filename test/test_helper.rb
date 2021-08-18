@@ -26,7 +26,7 @@ Minitest::Reporters.use!([
 module KubeclientNext
   class TestCase < ::Minitest::Test
     def run
-      WebMock.disable_net_connect!
+      disable_net_connect? ? WebMock.disable_net_connect! : WebMock.enable_net_connect!
       yield if block_given?
       super
     end
@@ -38,6 +38,12 @@ module KubeclientNext
 
     def kubeconfig_fixture_path(name, sub_dir: "")
       File.expand_path(File.join("fixtures", "kubeconfig", sub_dir, "#{name}.yml"), __dir__)
+    end
+
+    private
+
+    def disable_net_connect?
+      true
     end
   end
 end
