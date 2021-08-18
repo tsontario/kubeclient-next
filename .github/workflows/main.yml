@@ -29,4 +29,4 @@ jobs:
           version: "v0.11.1"
       - name: In-cluster tests
         run: |
-          bundle exec rake integration_test
+          bundle exec rake test_integration
