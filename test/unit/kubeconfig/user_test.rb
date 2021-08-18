@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Kubeconfig
-    class UserTest < KubeclientNext::TestCase
+    class UserTest < TestCase
       def test_from_hash_success
         user_hash = YAML.load_file(kubeconfig_fixture_path("simple")).fetch("users").first
         user = User.from_hash(user_hash)

@@ -3,7 +3,7 @@
 require "test_helper"
 
 module KubeclientNext
-  class KubeconfigTest < KubeclientNext::TestCase
+  class KubeconfigTest < TestCase
     def test_from_file_fully_loads_simple_kubeconfig_file
       fixture_file = File.open(kubeconfig_fixture_path("simple"))
       config = KubeclientNext::Kubeconfig.from_file(fixture_file)

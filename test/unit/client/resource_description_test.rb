@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Client
-    class ResourceDescriptionTest < KubeclientNext::TestCase
+    class ResourceDescriptionTest < TestCase
       def test_from_hash
         hash = YAML.load_file(resource_description_fixture_path("configmaps"))
         name = hash["name"]

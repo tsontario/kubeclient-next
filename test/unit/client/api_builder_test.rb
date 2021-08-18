@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Client
-    class APIBuilderTest < KubeclientNext::TestCase
+    class APIBuilderTest < TestCase
       def setup
         super
         RESTClient.any_instance.stubs(:hardcoded_auth)

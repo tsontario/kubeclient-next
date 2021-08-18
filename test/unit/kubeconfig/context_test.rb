@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Kubeconfig
-    class ContextTest < KubeclientNext::TestCase
+    class ContextTest < TestCase
       def test_from_hash_success
         context_hash = YAML.load_file(kubeconfig_fixture_path("simple")).fetch("contexts").first
         context = Context.from_hash(context_hash)

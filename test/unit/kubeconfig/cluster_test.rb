@@ -5,7 +5,7 @@ require "test_helper"
 
 module KubeclientNext
   module Kubeconfig
-    class ClusterTest < KubeclientNext::TestCase
+    class ClusterTest < TestCase
       def test_from_hash_success
         cluster_hash = YAML.load_file(kubeconfig_fixture_path("simple")).fetch("clusters").first
         cluster = Cluster.from_hash(cluster_hash)
