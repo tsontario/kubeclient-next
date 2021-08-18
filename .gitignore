@@ -19,3 +19,6 @@ Gemfile.lock
 
 # development kubeconfig
 /kubeconfig
+
+# A handy file for keeping scraps around
+/scratch
