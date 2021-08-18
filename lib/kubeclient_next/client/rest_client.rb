@@ -17,8 +17,24 @@ module KubeclientNext
         hardcoded_auth
       end
 
-      def get(sub_path = "")
+      def get(sub_path = "", headers: {})
         connection.get(formatted_uri(host, path, sub_path))
+      end
+
+      def post(sub_path = "", data:, headers: {})
+        connection.post(formatted_uri(host, path, sub_path), data, headers)
+      end
+
+      def put(sub_path = "", data:, headers: {})
+        connection.put(formatted_uri(host, path, sub_path), data, headers)
+      end
+
+      def patch(sub_path = "", strategy:, data:, headers: {})
+        connection.patch(formatted_uri(host, path, sub_path), data, headers)
+      end
+
+      def delete(sub_path = "", headers: {})
+        connection.delete(formatted_uri(host, path, sub_path))
       end
 
       private
