@@ -9,12 +9,12 @@ desc("Run test suite")
 Rake::TestTask.new(:test) do |task|
   task.libs << "test"
   task.libs << "lib"
-  task.test_files = FileList["test/unit/*_test.rb"]
+  task.test_files = FileList["test/unit/**/*_test.rb"]
 end
 
 desc("Run in-cluster integrations tests")
 Rake::TestTask.new(:test_integration) do |task|
   task.libs << "test"
   task.libs << "lib"
-  task.test_files = FileList["test/integration/*_test.rb"]
+  task.test_files = FileList["test/integration/**/*_test.rb"]
 end
