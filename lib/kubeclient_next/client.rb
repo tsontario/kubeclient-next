@@ -5,8 +5,8 @@ module KubeclientNext
   module Client
     Error = Class.new(Error)
 
-    def self.from_config(config)
-      Client.new(config: config, context: config.current_context)
+    def self.from_config(config, context: nil, group_versions: Client::DEFAULT_GROUP_VERSIONS)
+      Client.new(config: config, context: context || config.current_context, group_versions: group_versions)
     end
   end
 end
