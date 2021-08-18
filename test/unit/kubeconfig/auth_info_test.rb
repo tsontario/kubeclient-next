@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Kubeconfig
-    class AuthInfoTest < KubeclientNext::TestCase
+    class AuthInfoTest < TestCase
       def test_from_hash_success
         auth_info_hash = YAML.load_file(kubeconfig_fixture_path("complete", sub_dir: "auth_info"))
         auth_info = AuthInfo.from_hash(auth_info_hash)

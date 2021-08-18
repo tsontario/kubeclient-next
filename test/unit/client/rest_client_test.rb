@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Client
-    class RESTClientTest < KubeclientNext::TestCase
+    class RESTClientTest < TestCase
       def setup
         super
         @config = config_fixture

@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Client
-    class ClientTest < KubeclientNext::TestCase
+    class ClientTest < TestCase
       def setup
         super
         @client = Client.new(config: config_fixture, context: config_fixture.current_context)

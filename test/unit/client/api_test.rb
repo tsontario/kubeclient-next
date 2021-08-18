@@ -4,7 +4,7 @@ require "test_helper"
 
 module KubeclientNext
   module Client
-    class APITest < KubeclientNext::TestCase
+    class APITest < TestCase
       def test_path
         core_api = API.new(group_version: GroupVersion.new(group: "core", version: "v1"))
         other_api = API.new(group_version: GroupVersion.new(group: "bogus", version: "v2"))
