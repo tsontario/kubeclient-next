@@ -6,10 +6,23 @@ module KubeclientNext
   module Client
     class APITest < TestCase
       def test_path
-        core_api = API.new(group_version: GroupVersion.new(group: "core", version: "v1"))
-        other_api = API.new(group_version: GroupVersion.new(group: "bogus", version: "v2"))
+        core_api = api_fixture("core", "v1")
+        other_api = api_fixture("bogus", "v2")
         assert_equal("/api/v1", core_api.path)
         assert_equal("/apis/bogus/v2", other_api.path)
+      end
+
+      def test_has_method?
+        api = api_fixture
+        refute(api.has_method?(:fake_method))
+        api.expects(:api_methods).returns({ fake_method: true })
+        assert(api.has_method?(:fake_method))
+      end
+
+      private
+
+      def api_fixture(group = "core", version = "v1")
+        API.new(group_version: GroupVersion.new(group: group, version: version))
       end
     end
   end
