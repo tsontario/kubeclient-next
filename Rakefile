@@ -17,4 +17,5 @@ Rake::TestTask.new(:test_integration) do |task|
   task.libs << "test"
   task.libs << "lib"
   task.test_files = FileList["test/integration/**/*_test.rb"]
+  task.warning = false
 end
