@@ -12,8 +12,8 @@ module KubeclientNext
       "#{group}/#{version}"
     end
 
-    def to_sym
-      to_s.to_sym
+    def to_method_name
+      "#{group}_#{version}"
     end
   end
 end
