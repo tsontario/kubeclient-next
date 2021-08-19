@@ -2,7 +2,7 @@
 
 require "faraday"
 require "base64"
-require "recursive_open_struct"
+# require "recursive_open_struct"
 
 module KubeclientNext
   module Client
@@ -18,30 +18,29 @@ module KubeclientNext
         hardcoded_auth
       end
 
-      def get(sub_path = "", headers: {}, as: :ros)
-        byebug
+      def get(sub_path = "", headers: {}, as: :raw)
         response = connection.get(formatted_uri(host, path, sub_path))
-        format_response(response, as)
+        format_response(response, as: as)
       end
 
-      def post(sub_path = "", data:, headers: {}, as: :ros)
+      def post(sub_path = "", data:, headers: {}, as: :raw)
         response = connection.post(formatted_uri(host, path, sub_path), data, headers)
-        format_response(response, as)
+        format_response(response, as: as)
       end
 
-      def put(sub_path = "", data:, headers: {}, as: :ros)
+      def put(sub_path = "", data:, headers: {}, as: :raw)
         response = connection.put(formatted_uri(host, path, sub_path), data, headers)
-        format_response(response, as)
+        format_response(response, as: as)
       end
 
-      def patch(sub_path = "", strategy:, data:, headers: {}, as: :ros)
+      def patch(sub_path = "", strategy:, data:, headers: {}, as: :raw)
         response = connection.patch(formatted_uri(host, path, sub_path), data, headers)
-        format_response(response, as)
+        format_response(response, as: as)
       end
 
-      def delete(sub_path = "", headers: {}, as: :ros)
+      def delete(sub_path = "", headers: {}, as: :raw)
         response = connection.delete(formatted_uri(host, path, sub_path))
-        format_response(response, as)
+        format_response(response, as: as)
       end
 
       private
@@ -81,12 +80,15 @@ module KubeclientNext
         end
       end
 
-      def format_response(response, as:)
+      def format_response(response, as: :raw)
         case as
         when :ros
-          RecursiveOpenStruct.new(response.body)
-        else
           response.body
+          # RecursiveOpenStruct.new(response.body)
+        when :raw
+          response
+        else
+          raise Error
         end
       end
     end

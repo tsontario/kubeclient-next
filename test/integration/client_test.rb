@@ -10,13 +10,15 @@ module KubeclientNext
 
     def test_get_configmap
       create_from_fixture("config_map")
-      configmap = client.get_configmap(namespace: @namespace, name: "test-configmap")
+      client.get_configmap(namespace: @namespace, name: "test-configmap")
+      # TODO
     end
 
     def test_get_configmaps
       create_from_fixture("config_map")
       create_from_fixture("config_map_2")
-      configmaps = client.get_configmaps(namespace: @namespace)
+      client.get_configmaps(namespace: @namespace)
+      # TODO
     end
   end
 end

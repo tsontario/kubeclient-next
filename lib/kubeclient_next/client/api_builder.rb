@@ -37,7 +37,7 @@ module KubeclientNext
 
       def build!
         rest_client = RESTClient.new(config: config, context: context, path: api.path)
-        response = rest_client.get
+        response = rest_client.get(as: :raw)
         resource_descriptions = JSON.parse(response.body)["resources"].map do |resource_description|
           ResourceDescription.from_hash(resource_description)
         end

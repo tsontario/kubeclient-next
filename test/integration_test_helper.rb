@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "open3"
-require 'securerandom'
+require "securerandom"
 require "test_helper"
-
 
 module KubeclientNext
   class IntegrationTestCase < TestCase
@@ -38,7 +37,7 @@ module KubeclientNext
       prefix = "kubeclient-next"
       suffix = "-#{SecureRandom.hex(8)}"
       max_base_length = 63 - (prefix + suffix).length # namespace name length must be <= 63 chars
-      ns_name = prefix + test_name.gsub(/[^-a-z0-9]/, '-').slice(0, max_base_length) + suffix
+      ns_name = prefix + test_name.gsub(/[^-a-z0-9]/, "-").slice(0, max_base_length) + suffix
 
       create_namespace(ns_name)
       ns_name
@@ -61,7 +60,7 @@ module KubeclientNext
     end
 
     def create_namespace(name)
-      out, err, st = Open3.capture3("kubectl --context=#{@context} create namespace #{name}")
+      _, err, st = Open3.capture3("kubectl --context=#{@context} create namespace #{name}")
       raise KubectlError, err unless st.success?
       name
     end
@@ -73,7 +72,8 @@ module KubeclientNext
     end
 
     def create_from_fixture(fixture_name, sub_path: "")
-      path = File.expand_path(File.join("fixtures", "integration", "resources", sub_path, "#{fixture_name}.yml"), __dir__)
+      path = File.expand_path(File.join("fixtures", "integration", "resources", sub_path, "#{fixture_name}.yml"),
+        __dir__)
       _, err, st = Open3.capture3("kubectl --context=#{@context} --namespace=#{@namespace} create -f #{path}")
       raise KubectlError, err unless st.success?
       true
