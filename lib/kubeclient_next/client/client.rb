@@ -23,7 +23,7 @@ module KubeclientNext
       end
 
       def discover!
-        apis.each { |api| APIBuilder.new(api: api, config: client.config, context: client.context).build! }
+        apis.each { |api| APIBuilder.new(api: api, config: config, context: context.name).build! }
       end
 
       def set_context(context_name)

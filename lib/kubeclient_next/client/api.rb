@@ -21,10 +21,6 @@ module KubeclientNext
         @discovered
       end
 
-      def register_method(method)
-        api_methods[method] = true
-      end
-
       def has_method?(method)
         api_methods.dig(method)
       end
@@ -41,6 +37,10 @@ module KubeclientNext
       private
 
       attr_accessor :api_methods
+
+      def register_method(method)
+        api_methods[method] = true
+      end
     end
   end
 end
