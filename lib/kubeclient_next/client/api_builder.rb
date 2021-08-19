@@ -51,47 +51,55 @@ module KubeclientNext
       # TODO: register method names in APIs and check to avoid conflicts (we assume this will be a rarity)
       def define_create_resource(api, rest_client, resource_description)
         method_name = "create_#{resource_description.singular_name}".to_sym
-        api.define_singleton_method(method_name) do |kwargs = {}|
-          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
-          data = kwargs.fetch(:data)
-          headers = kwargs.fetch(:headers, {})
-          rest_client.post(resource_description.path_for_resources(namespace: namespace),
-            data: JSON.dump(data), headers: headers)
+        api.instance_eval do
+          define_singleton_method(method_name) do |kwargs = {}|
+            namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+            data = kwargs.fetch(:data)
+            headers = kwargs.fetch(:headers, {})
+            rest_client.post(resource_description.path_for_resources(namespace: namespace),
+              data: JSON.dump(data), headers: headers)
+          end
+          register_method(method_name)
         end
-        api.register_method(method_name)
       end
 
       def define_delete_resource(api, rest_client, resource_description)
         method_name = "delete_#{resource_description.singular_name}".to_sym
-        api.define_singleton_method(method_name) do |kwargs = {}|
-          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
-          name = kwargs.fetch(:name)
-          headers = kwargs.fetch(:headers, {})
-          rest_client.delete(resource_description.path_for_resource(namespace: namespace, name: name),
-            headers: headers)
+        api.instance_eval do
+          define_singleton_method(method_name) do |kwargs = {}|
+            namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+            name = kwargs.fetch(:name)
+            headers = kwargs.fetch(:headers, {})
+            rest_client.delete(resource_description.path_for_resource(namespace: namespace, name: name),
+              headers: headers)
+          end
+          register_method(method_name)
         end
-        api.register_method(method_name)
       end
 
       def define_get_resource(api, rest_client, resource_description)
         method_name = "get_#{resource_description.singular_name}".to_sym
-        api.define_singleton_method(method_name) do |kwargs = {}|
-          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
-          name = kwargs.fetch(:name)
-          headers = kwargs.fetch(:headers, {})
-          rest_client.get(resource_description.path_for_resource(namespace: namespace, name: name), headers: headers)
+        api.instance_eval do
+          define_singleton_method(method_name) do |kwargs = {}|
+            namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+            name = kwargs.fetch(:name)
+            headers = kwargs.fetch(:headers, {})
+            rest_client.get(resource_description.path_for_resource(namespace: namespace, name: name), headers: headers)
+          end
+          register_method(method_name)
         end
-        api.register_method(method_name)
       end
 
-      def define_get_resources(client, rest_client, resource_description)
+      def define_get_resources(api, rest_client, resource_description)
         method_name = "get_#{resource_description.plural_name}".to_sym
-        api.define_singleton_method(method_name) do |kwargs = {}|
-          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
-          headers = kwargs.fetch(:headers, {})
-          rest_client.get(resource_description.path_for_resources(namespace: namespace), headers: headers)
+        api.instance_eval do
+          define_singleton_method(method_name) do |kwargs = {}|
+            namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+            headers = kwargs.fetch(:headers, {})
+            rest_client.get(resource_description.path_for_resources(namespace: namespace), headers: headers)
+          end
+          register_method(method_name)
         end
-        api.register_method(method_name)
       end
 
       def define_patch_and_apply_resource(api, rest_client, resource_description)
@@ -103,16 +111,18 @@ module KubeclientNext
         method_name = "patch_#{resource_description.singular_name}".to_sym
         # Lexically scope this method in the block to make it available inside the closure when invoked by client
         scoped_content_type_for_patch_strategy = proc { |strategy| content_type_for_patch_strategy(strategy) }
-        api.define_singleton_method(method_name) do |kwargs = {}|
-          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
-          name = kwargs.fetch(:name)
-          data = kwargs.fetch(:data)
-          strategy = kwargs.fetch(:strategy)
-          headers = kwargs.fetch(:headers, {}).merge(scoped_content_type_for_patch_strategy.call(strategy))
-          rest_client.patch(resource_description.path_for_resource(namespace: namespace, name: name),
-            strategy: strategy, data: JSON.dump(data), headers: headers)
+        api.instance_eval do
+          define_singleton_method(method_name) do |kwargs = {}|
+            namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+            name = kwargs.fetch(:name)
+            data = kwargs.fetch(:data)
+            strategy = kwargs.fetch(:strategy)
+            headers = kwargs.fetch(:headers, {}).merge(scoped_content_type_for_patch_strategy.call(strategy))
+            rest_client.patch(resource_description.path_for_resource(namespace: namespace, name: name),
+              strategy: strategy, data: JSON.dump(data), headers: headers)
+          end
+          register_method(method_name)
         end
-        api.register_method(method_name)
       end
 
       def define_apply_resource(api, rest_client, resource_description)
@@ -123,15 +133,17 @@ module KubeclientNext
 
       def define_update_resource(api, rest_client, resource_description)
         method_name = "update_#{resource_description.singular_name}".to_sym
-        api.define_singleton_method(method_name) do |kwargs = {}|
-          namespace = kwargs.fetch(:namespace) if resource_description.namespaced
-          name = kwargs.fetch(:name)
-          data = kwargs.fetch(:data)
-          headers = kwargs.fetch(:headers, {})
-          rest_client.put(resource_description.path_for_resource(namespace: namespace, name: name),
-            data: JSON.dump(data), headers: headers)
+        api.instance_eval do
+          api.define_singleton_method(method_name) do |kwargs = {}|
+            namespace = kwargs.fetch(:namespace) if resource_description.namespaced
+            name = kwargs.fetch(:name)
+            data = kwargs.fetch(:data)
+            headers = kwargs.fetch(:headers, {})
+            rest_client.put(resource_description.path_for_resource(namespace: namespace, name: name),
+              data: JSON.dump(data), headers: headers)
+          end
+          register_method(method_name)
         end
-        api.register_method(method_name)
       end
 
       def content_type_for_patch_strategy(strategy)

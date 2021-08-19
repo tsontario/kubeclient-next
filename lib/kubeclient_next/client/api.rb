@@ -25,6 +25,10 @@ module KubeclientNext
         api_methods[method] = true
       end
 
+      def has_method?(method)
+        api_methods.dig(method)
+      end
+
       # Core/v1 resources are in `/api/#{version}`. In general, all other resources are found in `/apis/GROUP/VERSION`
       def path
         @path ||= if group == "core"
