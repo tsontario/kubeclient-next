@@ -13,7 +13,7 @@ module KubeclientNext
       end
 
       def each(&block)
-        @apis.each { |gv, api| yield(gv, api) }
+        @apis.each { |api| yield(api) }
       end
     end
   end

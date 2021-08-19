@@ -18,14 +18,14 @@ module KubeclientNext
         end
         RESTClient.any_instance.expects(:connection).returns(mock_connection)
 
+        config = config_fixture
         api = API.new(group_version: GroupVersion.new(group: "test", version: "v1"))
-        client = ::KubeclientNext::Client.from_config(config_fixture)
-        refute(client.respond_to?(:get_testresource))
-        refute(client.respond_to?(:get_testresources))
-        builder = APIBuilder.new(api: api, client: client)
+        refute(api.respond_to?(:get_testresource))
+        refute(api.respond_to?(:get_testresources))
+        builder = APIBuilder.new(api: api, config: config, context: config.current_context)
         builder.build!
-        assert(client.respond_to?(:get_testresource))
-        assert(client.respond_to?(:get_testresources))
+        assert(api.respond_to?(:get_testresource))
+        assert(api.respond_to?(:get_testresources))
       end
 
       private
