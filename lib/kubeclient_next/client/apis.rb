@@ -15,8 +15,16 @@ module KubeclientNext
       end
 
       def each(&block)
-        @apis.each { |_, api| yield(api) }
+        apis.each { |_, api| yield(api) }
       end
+
+      def apis_for_method(method)
+        apis.select { |api| api.has_method?(method) }
+      end
+
+      private
+
+      attr_reader :apis
     end
   end
 end

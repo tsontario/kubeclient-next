@@ -19,6 +19,15 @@ module KubeclientNext
         update: :define_update_resource,
       }
 
+      GENERATED_METHOD_PREFIXES = [
+        "create_",
+        "delete_",
+        "get_",
+        "patch_",
+        "apply_",
+        "update_",
+      ]
+
       def initialize(api:, config:, context:)
         super()
         @api = api
@@ -44,11 +53,6 @@ module KubeclientNext
 
       private
 
-      # TODO: handle response errors (do this in RESTClient...)
-      # TODO: handle ArgumentErrors for expected kwargs for each type of method
-      # TODO: what kind of objects to return:
-      #   (Recursive Open Struct or user-provided class that supports unmarshalling?)
-      # TODO: register method names in APIs and check to avoid conflicts (we assume this will be a rarity)
       def define_create_resource(api, rest_client, resource_description)
         method_name = "create_#{resource_description.singular_name}".to_sym
         api.instance_eval do

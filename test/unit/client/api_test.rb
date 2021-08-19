@@ -12,11 +12,11 @@ module KubeclientNext
         assert_equal("/apis/bogus/v2", other_api.path)
       end
 
-      def test_has_method?
+      def test_has_api_method?
         api = api_fixture
-        refute(api.has_method?(:fake_method))
+        refute(api.has_api_method?(:fake_method))
         api.expects(:api_methods).returns({ fake_method: true })
-        assert(api.has_method?(:fake_method))
+        assert(api.has_api_method?(:fake_method))
       end
 
       private

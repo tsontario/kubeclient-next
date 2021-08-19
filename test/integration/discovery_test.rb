@@ -13,9 +13,9 @@ module KubeclientNext
         :patch_configmap,
         :update_configmap,
       ]
-      assert(expected_methods.none? { |method| client.methods.include?(method) })
+      assert(expected_methods.none? { |method| client.respond_to?(method) })
       client.discover!
-      assert(expected_methods.all? { |method| client.methods.include?(method) })
+      assert(expected_methods.all? { |method| client.respond_to?(method) })
     end
 
     # TODO: make a well-known namespace with test resources

@@ -21,7 +21,7 @@ module KubeclientNext
         @discovered
       end
 
-      def has_method?(method)
+      def has_api_method?(method)
         api_methods.dig(method)
       end
 
