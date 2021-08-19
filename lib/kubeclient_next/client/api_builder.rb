@@ -48,6 +48,7 @@ module KubeclientNext
           VERBS_TO_METHODS
             .filter { |verb, _| resource_description.has_verb?(verb) }
             .each_value { |method| send(method, api, rest_client, resource_description) }
+          api.instance_eval { self.discovered = true }
         end
       end
 

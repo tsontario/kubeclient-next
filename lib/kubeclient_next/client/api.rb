@@ -18,7 +18,7 @@ module KubeclientNext
       end
 
       def discovered?
-        @discovered
+        discovered
       end
 
       def has_api_method?(method)
@@ -36,7 +36,7 @@ module KubeclientNext
 
       private
 
-      attr_accessor :api_methods
+      attr_accessor :api_methods, :discovered
 
       def register_method(method)
         api_methods[method] = true
