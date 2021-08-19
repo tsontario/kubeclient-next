@@ -19,7 +19,7 @@ module KubeclientNext
       end
 
       def apis_for_method(method)
-        apis.select { |api| api.has_method?(method) }
+        select { |api| api.has_api_method?(method) }
       end
 
       private

@@ -2,6 +2,7 @@
 
 require "faraday"
 require "base64"
+require "recursive_open_struct"
 
 module KubeclientNext
   module Client
@@ -17,24 +18,30 @@ module KubeclientNext
         hardcoded_auth
       end
 
-      def get(sub_path = "", headers: {})
-        connection.get(formatted_uri(host, path, sub_path))
+      def get(sub_path = "", headers: {}, as: :ros)
+        byebug
+        response = connection.get(formatted_uri(host, path, sub_path))
+        format_response(response, as)
       end
 
-      def post(sub_path = "", data:, headers: {})
-        connection.post(formatted_uri(host, path, sub_path), data, headers)
+      def post(sub_path = "", data:, headers: {}, as: :ros)
+        response = connection.post(formatted_uri(host, path, sub_path), data, headers)
+        format_response(response, as)
       end
 
-      def put(sub_path = "", data:, headers: {})
-        connection.put(formatted_uri(host, path, sub_path), data, headers)
+      def put(sub_path = "", data:, headers: {}, as: :ros)
+        response = connection.put(formatted_uri(host, path, sub_path), data, headers)
+        format_response(response, as)
       end
 
-      def patch(sub_path = "", strategy:, data:, headers: {})
-        connection.patch(formatted_uri(host, path, sub_path), data, headers)
+      def patch(sub_path = "", strategy:, data:, headers: {}, as: :ros)
+        response = connection.patch(formatted_uri(host, path, sub_path), data, headers)
+        format_response(response, as)
       end
 
-      def delete(sub_path = "", headers: {})
-        connection.delete(formatted_uri(host, path, sub_path))
+      def delete(sub_path = "", headers: {}, as: :ros)
+        response = connection.delete(formatted_uri(host, path, sub_path))
+        format_response(response, as)
       end
 
       private
@@ -71,6 +78,15 @@ module KubeclientNext
           URI.join(host, "#{path}/", sub_path)
         else
           URI.join(host, path, sub_path)
+        end
+      end
+
+      def format_response(response, as:)
+        case as
+        when :ros
+          RecursiveOpenStruct.new(response.body)
+        else
+          response.body
         end
       end
     end

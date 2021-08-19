@@ -37,7 +37,7 @@ module KubeclientNext
         when 0
           super
         when 1
-          public_send(candidate_apis.first, args, &block)
+          candidate_apis.first.public_send(method_name, *args, &block)
         else
           raise APINameConflictError, "#{method_name} is defined in multiple group versions: " \
             "#{candidate_apis.map(&:group_version).join(", ")}. You can access a specific GroupVersion " \
