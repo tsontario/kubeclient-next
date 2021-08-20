@@ -43,8 +43,12 @@ module KubeclientNext
       ns_name
     end
 
-    def client(group_versions: [GroupVersion.new(group: "core", version: "v1")])
-      @client ||= Client.from_config(kubeconfig, group_versions: group_versions)
+    def build_client(group_versions: [GroupVersion.new(group: "core", version: "v1")])
+      Client.from_config(kubeconfig, group_versions: group_versions)
+    end
+
+    def client
+      @client ||= build_client
     end
 
     private

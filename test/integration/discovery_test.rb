@@ -17,15 +17,5 @@ module KubeclientNext
       client.discover!
       assert(expected_methods.all? { |method| client.respond_to?(method) })
     end
-
-    # TODO: make a well-known namespace with test resources
-    # Note: will probably need to implement the recursive-open-struct return values for RESTClient
-    # responses...
-
-    private
-
-    def client(group_versions: [GroupVersion.new(group: "core", version: "v1")])
-      @client ||= Client.from_config(kubeconfig, group_versions: group_versions)
-    end
   end
 end
