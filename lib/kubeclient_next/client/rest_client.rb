@@ -2,7 +2,9 @@
 
 require "faraday"
 require "base64"
-# require "recursive_open_struct"
+require "recursive_open_struct"
+
+require_relative "response_formatter"
 
 module KubeclientNext
   module Client
@@ -18,27 +20,27 @@ module KubeclientNext
         hardcoded_auth
       end
 
-      def get(sub_path = "", headers: {}, as: :raw)
+      def get(sub_path = "", headers: {}, as: :ros)
         response = connection.get(formatted_uri(host, path, sub_path))
         format_response(response, as: as)
       end
 
-      def post(sub_path = "", data:, headers: {}, as: :raw)
+      def post(sub_path = "", data:, headers: {}, as: :ros)
         response = connection.post(formatted_uri(host, path, sub_path), data, headers)
         format_response(response, as: as)
       end
 
-      def put(sub_path = "", data:, headers: {}, as: :raw)
+      def put(sub_path = "", data:, headers: {}, as: :ros)
         response = connection.put(formatted_uri(host, path, sub_path), data, headers)
         format_response(response, as: as)
       end
 
-      def patch(sub_path = "", strategy:, data:, headers: {}, as: :raw)
+      def patch(sub_path = "", strategy:, data:, headers: {}, as: :ros)
         response = connection.patch(formatted_uri(host, path, sub_path), data, headers)
         format_response(response, as: as)
       end
 
-      def delete(sub_path = "", headers: {}, as: :raw)
+      def delete(sub_path = "", headers: {}, as: :ros)
         response = connection.delete(formatted_uri(host, path, sub_path))
         format_response(response, as: as)
       end
@@ -80,16 +82,8 @@ module KubeclientNext
         end
       end
 
-      def format_response(response, as: :raw)
-        case as
-        when :ros
-          response.body
-          # RecursiveOpenStruct.new(response.body)
-        when :raw
-          response
-        else
-          raise Error
-        end
+      def format_response(response, as: :ros)
+        ResponseFormatter.new(response).format(as: as)
       end
     end
   end

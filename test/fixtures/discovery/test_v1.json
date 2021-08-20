@@ -11,6 +11,18 @@
         "get",
         "list"
       ]
+    },
+    {
+      "name": "moretestresources",
+      "singularName": "",
+      "namespaced": true,
+      "kind": "MoreTestResource",
+      "verbs": [
+        "get",
+        "list",
+        "create",
+        "delete"
+      ]
     }
   ]
 }

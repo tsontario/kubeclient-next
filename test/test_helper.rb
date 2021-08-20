@@ -40,6 +40,15 @@ module KubeclientNext
       File.expand_path(File.join("fixtures", "kubeconfig", sub_dir, "#{name}.yml"), __dir__)
     end
 
+    # Use raw JSON strings as that's what we expect to receive in production
+    def discovery_response_fixture(name)
+      File.read(discovery_response_fixture_path(name))
+    end
+
+    def discovery_response_fixture_path(name)
+      File.expand_path(File.join("fixtures", "discovery", "#{name}.json"), __dir__)
+    end
+
     private
 
     def disable_net_connect?
