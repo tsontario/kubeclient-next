@@ -19,15 +19,6 @@ module KubeclientNext
         update: :define_update_resource,
       }
 
-      GENERATED_METHOD_PREFIXES = [
-        "create_",
-        "delete_",
-        "get_",
-        "patch_",
-        "apply_",
-        "update_",
-      ]
-
       def initialize(api:, config:, context:)
         super()
         @api = api

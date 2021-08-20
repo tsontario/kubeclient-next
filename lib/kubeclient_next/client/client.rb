@@ -46,9 +46,7 @@ module KubeclientNext
       end
 
       def respond_to_missing?(method_name, include_private = false)
-        # TODO: once bundle install works use #present? here
-        # apis.apis_for_method(method_name).present? || super
-        apis.any? { |api| api.has_api_method?(method_name) } || super
+        apis.apis_for_method(method_name).present? || super
       end
     end
   end
