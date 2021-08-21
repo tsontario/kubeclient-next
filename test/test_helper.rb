@@ -49,6 +49,14 @@ module KubeclientNext
       File.expand_path(File.join("fixtures", "discovery", "#{name}.json"), __dir__)
     end
 
+    def resource_fixture(name)
+      File.read(resource_fixture_path(name))
+    end
+
+    def resource_fixture_path(name)
+      File.expand_path(File.join("fixtures", "integration", "resources", "#{name}.yml"), __dir__)
+    end
+
     private
 
     def disable_net_connect?

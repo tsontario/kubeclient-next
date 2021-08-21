@@ -47,11 +47,12 @@ module KubeclientNext
 
       def define_create_resource(api, rest_client, resource_description)
         method_name = "create_#{resource_description.singular_name}".to_sym
+        json_content_type = { "Content-Type": "application/json" }
         api.instance_eval do
           define_singleton_method(method_name) do |kwargs = {}|
             namespace = kwargs.fetch(:namespace) if resource_description.namespaced
             data = kwargs.fetch(:data)
-            headers = kwargs.fetch(:headers, {})
+            headers = kwargs.fetch(:headers, {}).merge(json_content_type)
             rest_client.post(resource_description.path_for_resources(namespace: namespace),
               data: JSON.dump(data), headers: headers)
           end
@@ -129,12 +130,13 @@ module KubeclientNext
 
       def define_update_resource(api, rest_client, resource_description)
         method_name = "update_#{resource_description.singular_name}".to_sym
+        json_content_type = { "Content-Type": "application/json" }
         api.instance_eval do
           api.define_singleton_method(method_name) do |kwargs = {}|
             namespace = kwargs.fetch(:namespace) if resource_description.namespaced
             name = kwargs.fetch(:name)
             data = kwargs.fetch(:data)
-            headers = kwargs.fetch(:headers, {})
+            headers = kwargs.fetch(:headers, {}).merge(json_content_type)
             rest_client.put(resource_description.path_for_resource(namespace: namespace, name: name),
               data: JSON.dump(data), headers: headers)
           end
