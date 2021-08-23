@@ -25,7 +25,9 @@ module KubeclientNext
         response.expects(:body).returns(body)
 
         resources = ResponseFormatter.new(response).format(as: :ros)
-        expected = JSON.parse(body)["resources"].map { |resource| RecursiveOpenStruct.new(resource) }
+        expected = JSON.parse(body)["resources"].map do |resource|
+          RecursiveOpenStruct.new(resource, recurse_over_arrays: true)
+        end
         assert_equal(expected, resources)
         expected_names = ["testresources", "moretestresources"]
         resources.each { |resource| assert(expected_names.include?(resource.name)) }

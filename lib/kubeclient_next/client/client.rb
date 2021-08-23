@@ -10,11 +10,6 @@ module KubeclientNext
       ContextNotFoundError = Class.new(Error)
       APINameConflictError = Class.new(Error)
 
-      DEFAULT_GROUP_VERSIONS = [
-        GroupVersion.new(group: "core", version: "v1"),
-        GroupVersion.new(group: "apps", version: "v1"),
-      ]
-
       attr_reader :config, :context, :apis
 
       def initialize(config:, context:, group_versions: DEFAULT_GROUP_VERSIONS)

@@ -26,11 +26,11 @@ module KubeclientNext
       def build_recursive_open_struct_response(body)
         data = JSON.parse(body)
         if item_list?(data)
-          data.fetch("items").map { |item| RecursiveOpenStruct.new(item) }
+          data.fetch("items").map { |item| RecursiveOpenStruct.new(item, recurse_over_arrays: true) }
         elsif resources_list?(data)
-          data.fetch("resources").map { |item| RecursiveOpenStruct.new(item) }
+          data.fetch("resources").map { |item| RecursiveOpenStruct.new(item, recurse_over_arrays: true) }
         else
-          RecursiveOpenStruct.new(data)
+          RecursiveOpenStruct.new(data, recurse_over_arrays: true)
         end
       end
 

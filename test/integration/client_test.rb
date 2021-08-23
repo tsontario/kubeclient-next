@@ -49,9 +49,8 @@ module KubeclientNext
       configmap = client.get_configmap(name: "test-configmap", namespace: @namespace)
       refute(configmap.metadata.annotations)
       configmap.metadata.annotations = { test: "bogus" }
-      client.update_configmap(name: "test-configmap", namespace: @namespace, data: configmap.to_h)
-      updated = client.get_configmap(name: "test-configmap", namespace: @namespace)
-      assert_equal("bogus", updated.metadata.annotations.test)
+      result = client.update_configmap(name: "test-configmap", namespace: @namespace, data: configmap.to_h)
+      assert_equal("bogus", result.metadata.annotations.test)
     end
 
     def test_json_patch_configmap
@@ -59,10 +58,9 @@ module KubeclientNext
       configmap = client.get_configmap(name: "test-configmap", namespace: @namespace)
       refute(configmap.data.json_patch)
       patch_data = [{ "op" => "add", "path" => "/data/json_patch", "value" => "test" }]
-      client.patch_configmap(strategy: :json, name: "test-configmap",
+      result = client.patch_configmap(strategy: :json, name: "test-configmap",
         namespace: @namespace, data: patch_data)
-      patched = client.get_configmap(name: "test-configmap", namespace: @namespace)
-      assert_equal("test", patched.data.json_patch)
+      assert_equal("test", result.data.json_patch)
     end
 
     def test_merge_patch_configmap
@@ -70,15 +68,86 @@ module KubeclientNext
       configmap = client.get_configmap(name: "test-configmap", namespace: @namespace)
       refute(configmap.data.merge_patch)
       patch_data = { data: { merge_patch: "test" } }
-      client.patch_configmap(strategy: :merge, name: "test-configmap",
+      result = client.patch_configmap(strategy: :merge, name: "test-configmap",
         namespace: @namespace, data: patch_data)
-      patched = client.get_configmap(name: "test-configmap", namespace: @namespace)
-      assert_equal("test", patched.data.merge_patch)
+      assert_equal("test", result.data.merge_patch)
     end
 
-    def test_strategic_merge_patch_configmap
-      # TODO: need to actually test something with a list to ensure strategic directives are
-      # actually being followed by the patch (e.g. Pod w/ busybox containers)
+    def test_strategic_merge_patch_deployment_default_strategy
+      create_from_fixture("deployment")
+
+      deployment = client.get_deployment(name: "busybox", namespace: @namespace)
+      assert_equal(1, deployment.spec.template.spec.containers.length)
+      refute(deployment.spec.template.spec.containers.map(&:name).include?("addition"))
+      patch_data = {
+        spec: {
+          template: {
+            spec: {
+              containers: [{
+                name: "addition",
+                image: "busybox",
+                command: ["tail", "-f", "/dev/null"],
+              }],
+            },
+          },
+        },
+      }
+      result = client.patch_deployment(name: "busybox", namespace: @namespace,
+        data: patch_data, strategy: :strategic_merge)
+      assert_equal(2, result.spec.template.spec.containers.length)
+      assert(result.spec.template.spec.containers.map(&:name).include?("addition"))
+    end
+
+    def test_strategic_merge_patch_deployment_replace_strategy
+      create_from_fixture("deployment")
+
+      deployment = client.get_deployment(name: "busybox", namespace: @namespace)
+      assert_equal(1, deployment.spec.template.spec.containers.length)
+      refute(deployment.spec.template.spec.containers.map(&:name).include?("replacement"))
+      patch_data = {
+        spec: {
+          template: {
+            spec: {
+              "$patch": "replace",
+              containers: [{
+                name: "replacement",
+                image: "busybox",
+                command: ["tail", "-f", "/dev/null"],
+              }],
+            },
+          },
+        },
+      }
+      result = client.patch_deployment(name: "busybox", namespace: @namespace,
+        data: patch_data, strategy: :strategic_merge)
+      assert_equal(1, result.spec.template.spec.containers.length)
+      assert_equal("replacement", result.spec.template.spec.containers.first.name)
+    end
+
+    def test_strategic_metge_patch_deployment_delete_strategy
+      create_from_fixture("deployment")
+
+      deployment = client.get_deployment(name: "busybox", namespace: @namespace)
+      assert_equal(1, deployment.spec.template.spec.containers.length)
+      assert(deployment.spec.template.spec.containers.first.ports)
+      patch_data = {
+        spec: {
+          template: {
+            spec: {
+              containers: [{
+                name: "busybox",
+                ports: [
+                  "$patch": "delete",
+                  containerPort: 8080,
+                ],
+              }],
+            },
+          },
+        },
+      }
+      result = client.patch_deployment(name: "busybox", namespace: @namespace,
+        data: patch_data, strategy: :strategic_merge)
+      refute(result.spec.template.spec.containers.first.ports)
     end
 
     def test_client_raises_argument_error_when_unsupported_patch_strategy_specified
