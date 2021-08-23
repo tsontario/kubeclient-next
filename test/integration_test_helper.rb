@@ -11,6 +11,11 @@ module KubeclientNext
     MissingContextError = Class.new(Error)
     KubectlError = Class.new(Error)
 
+    if ENV["PARALLELIZE_ME"]
+      puts "Running tests in parallel! (# Threads: #{ENV["MT_CPU"]}"
+      parallelize_me!
+    end
+
     def run
       super do
         @config = kubeconfig
