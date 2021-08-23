@@ -8,10 +8,5 @@ module KubeclientNext
       gv = GroupVersion.new(group: "group", version: "version")
       assert_equal(gv.to_s, "group/version")
     end
-
-    def test_to_sym
-      gv = GroupVersion.new(group: "group", version: "version")
-      assert_equal(gv.to_sym, :"group/version")
-    end
   end
 end

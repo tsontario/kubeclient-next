@@ -14,10 +14,15 @@ module KubeclientNext
       def initialize(group_version:)
         @group_version = group_version
         @discovered = false
+        @api_methods = {}
       end
 
       def discovered?
-        @discovered
+        discovered
+      end
+
+      def has_api_method?(method)
+        api_methods.dig(method)
       end
 
       # Core/v1 resources are in `/api/#{version}`. In general, all other resources are found in `/apis/GROUP/VERSION`
@@ -27,6 +32,14 @@ module KubeclientNext
         else
           "/apis/#{group}/#{version}"
         end
+      end
+
+      private
+
+      attr_accessor :api_methods, :discovered
+
+      def register_method(method)
+        api_methods[method] = true
       end
     end
   end
