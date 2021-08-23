@@ -22,10 +22,6 @@ module KubeclientNext
         apis.each { |api| APIBuilder.new(api: api, config: config, context: context.name).build! }
       end
 
-      def set_context(context_name)
-        @context = config.context(context_name)
-      end
-
       def method_missing(method_name, *args, &block)
         candidate_apis = apis.apis_for_method(method_name)
         case candidate_apis.length
