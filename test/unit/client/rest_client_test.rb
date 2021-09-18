@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-module KubeclientNext
+module K8y
   module Client
     class RESTClientTest < TestCase
       def setup

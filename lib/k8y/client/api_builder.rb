@@ -5,7 +5,7 @@ require_relative "resource_description"
 
 require "json"
 
-module KubeclientNext
+module K8y
   module Client
     class APIBuilder < Module
       attr_reader :api, :config, :context

@@ -4,7 +4,7 @@ require_relative "rest_client"
 require_relative "api_builder"
 require_relative "apis"
 
-module KubeclientNext
+module K8y
   module Client
     class Client
       ContextNotFoundError = Class.new(Error)

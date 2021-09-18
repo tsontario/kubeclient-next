@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative "auth_info"
 
-module KubeclientNext
+module K8y
   module Kubeconfig
     class User
       attr_reader :name, :auth_info

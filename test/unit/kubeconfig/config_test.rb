@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-module KubeclientNext
+module K8y
   module Kubeconfig
     class ConfigTest < TestCase
       def test_from_hash_raises_error_when_missing_keys

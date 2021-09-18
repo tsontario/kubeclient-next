@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-module KubeclientNext
+module K8y
   module Client
     class ResourceDescriptionTest < TestCase
       def test_from_hash

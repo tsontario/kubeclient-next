@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module KubeclientNext
+module K8y
   module Client
     class ResponseFormatter
       UnsupportedResponseTypeError = Class.new(Error)
