@@ -30,15 +30,15 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency("faraday", "~> 1.6")
   spec.add_dependency("recursive-open-struct", "~>1.1")
-  spec.add_dependency("railties", ">= 6.0")
-  spec.add_dependency("activesupport", ">= 6.0")
+  spec.add_dependency("railties", "~> 6.0")
+  spec.add_dependency("activesupport", "~> 6.0")
 
-  spec.add_development_dependency("byebug")
+  spec.add_development_dependency("byebug", "~> 11")
   spec.add_development_dependency("minitest", "~> 5")
   spec.add_development_dependency("minitest-reporters")
   spec.add_development_dependency("mocha", "~> 1")
-  spec.add_development_dependency("rubocop")
-  spec.add_development_dependency("rubocop-shopify")
+  spec.add_development_dependency("rubocop", "~> 1")
+  spec.add_development_dependency("rubocop-shopify", "~> 2")
   spec.add_development_dependency("simplecov")
   spec.add_development_dependency("webmock", "~> 3.0")
 end
