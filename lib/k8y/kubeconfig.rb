@@ -23,7 +23,7 @@ module K8y
       raise NotInClusterError unless host && port
 
       token_data = File.read(TOKEN_FILE)
-      auth_info = AuthInfo.new(token_data: token_data, token_file: TOKEN_FILE)
+      auth_info = AuthInfo.new(token: token_data, token_file: TOKEN_FILE)
       user = User.new(
         name: IN_CLUSTER_NAME,
         auth_info: auth_info
@@ -35,7 +35,7 @@ module K8y
         insecure_skip_tls_verify: false,
         certificate_authority: nil,
         certificate_authority_data: ca_data,
-        server: URI.parse("https://#{host}:#{port}"),
+        server: "https://#{host}:#{port}",
       )
       context = Context.new(
         name: IN_CLUSTER_NAME,
@@ -45,7 +45,7 @@ module K8y
       )
 
       Config.new(
-        cluster: cluster,
+        clusters: [cluster],
         contexts: [context],
         current_context: context,
         users: [user]
