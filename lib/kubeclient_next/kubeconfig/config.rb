@@ -28,7 +28,7 @@ module KubeclientNext
         raise Error, e
       end
 
-      def initialize(api_version:, kind:, preferences:, clusters:, contexts:, users:, current_context:)
+      def initialize(api_version: "v1", kind: "Config", preferences: {}, clusters:, contexts:, users:, current_context:)
         @api_version = api_version
         @kind = kind
         @preferences = preferences
