@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative "client/client"
 
-module KubeclientNext
+module K8y
   module Client
     Error = Class.new(Error)
 

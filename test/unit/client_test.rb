@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-module KubeclientNext
+module K8y
   class ClientTest < TestCase
     def test_from_config
       client = Client.from_config(config_fixture)

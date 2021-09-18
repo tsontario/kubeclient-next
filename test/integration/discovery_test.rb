@@ -2,7 +2,7 @@
 
 require "integration_test_helper"
 
-module KubeclientNext
+module K8y
   class DiscoveryTest < IntegrationTestCase
     def test_discovery_generates_methods_from_verbs
       expected_methods = [

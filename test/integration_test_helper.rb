@@ -4,7 +4,7 @@ require "open3"
 require "securerandom"
 require "test_helper"
 
-module KubeclientNext
+module K8y
   class IntegrationTestCase < TestCase
     Error = Class.new(RuntimeError)
     KubeconfigError = Class.new(Error)
@@ -19,7 +19,7 @@ module KubeclientNext
     def run
       super do
         @config = kubeconfig
-        @context = ENV["KUBECLIENT_TEST_CONTEXT"] || "kind-kind"
+        @context = ENV["K8Y_TEST_CONTEXT"] || "kind-kind"
         @namespace = build_test_namespace(name)
       end
     ensure
@@ -27,11 +27,11 @@ module KubeclientNext
     end
 
     def kubeconfig
-      config_file = if ENV["KUBECLIENT_TEST_CONFIG"]
-        unless ENV["KUBECLIENT_TEST_CONTEXT"]
-          raise MissingContextError, "KUBECLIENT_TEST_CONTEXT must be set if KUBECLIENT_TEST_CONFIG is set."
+      config_file = if ENV["K8Y_TEST_CONFIG"]
+        unless ENV["K8Y_TEST_CONTEXT"]
+          raise MissingContextError, "K8Y_TEST_CONTEXT must be set if K8Y_TEST_CONFIG is set."
         end
-        File.open(ENV["KUBECLIENT_TEST_CONFIG"])
+        File.open(ENV["K8Y_TEST_CONFIG"])
       else
         kind_kubeconfig
       end
@@ -39,7 +39,7 @@ module KubeclientNext
     end
 
     def build_test_namespace(test_name)
-      prefix = "kubeclient-next"
+      prefix = "k8y"
       suffix = "-#{SecureRandom.hex(8)}"
       max_base_length = 63 - (prefix + suffix).length # namespace name length must be <= 63 chars
       ns_name = prefix + test_name.gsub(/[^-a-z0-9]/, "-").slice(0, max_base_length) + suffix

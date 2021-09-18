@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module KubeclientNext
+module K8y
   class GroupVersion
     attr_reader :group, :version
 

@@ -6,7 +6,7 @@ require "recursive_open_struct"
 
 require_relative "response_formatter"
 
-module KubeclientNext
+module K8y
   module Client
     class RESTClient
       attr_reader :context, :path

@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-module KubeclientNext
+module K8y
   class GroupVersionTest < TestCase
     def test_to_s
       gv = GroupVersion.new(group: "group", version: "version")

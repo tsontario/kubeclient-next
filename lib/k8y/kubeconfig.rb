@@ -2,7 +2,7 @@
 
 require_relative "kubeconfig/config"
 
-module KubeclientNext
+module K8y
   module Kubeconfig
     Error = Class.new(Error)
     NotInClusterError = Class.new(Error)

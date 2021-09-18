@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-module KubeclientNext
+module K8y
   module Kubeconfig
     class UserTest < TestCase
       def test_from_hash_success

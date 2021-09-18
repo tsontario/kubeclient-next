@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-module KubeclientNext
+module K8y
   module Kubeconfig
     class AuthInfo
       attr_reader :client_certificate, :client_certificate_data, :client_key, :client_key_data, :token, :token_file,

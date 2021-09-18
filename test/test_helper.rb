@@ -2,7 +2,7 @@
 require "simplecov"
 SimpleCov.start
 
-require "kubeclient_next"
+require "k8y"
 
 require "byebug"
 require "minitest/autorun"
@@ -23,7 +23,7 @@ Minitest::Reporters.use!([
   ),
 ])
 
-module KubeclientNext
+module K8y
   class TestCase < ::Minitest::Test
     def run
       disable_net_connect? ? WebMock.disable_net_connect! : WebMock.enable_net_connect!
@@ -33,7 +33,7 @@ module KubeclientNext
 
     def config_fixture(fixture = "simple")
       fixture_file = File.open(kubeconfig_fixture_path(fixture))
-      KubeclientNext::Kubeconfig.from_file(fixture_file)
+      K8y::Kubeconfig.from_file(fixture_file)
     end
 
     def kubeconfig_fixture_path(name, sub_dir: "")

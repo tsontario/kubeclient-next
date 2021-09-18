@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module KubeclientNext
+module K8y
   module Client
     class ResourceDescription
       attr_reader :name, :kind, :namespaced, :verbs

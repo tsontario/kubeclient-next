@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-module KubeclientNext
+module K8y
   class KubeconfigTest < TestCase
     def test_from_file_fully_loads_simple_kubeconfig_file
       fixture_file = File.open(kubeconfig_fixture_path("simple"))
-      config = KubeclientNext::Kubeconfig.from_file(fixture_file)
+      config = K8y::Kubeconfig.from_file(fixture_file)
       assert_equal("v1", config.api_version)
       assert_equal("Config", config.kind)
       assert_equal({ "color" => true }, config.preferences)

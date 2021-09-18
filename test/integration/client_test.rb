@@ -2,7 +2,7 @@
 
 require "integration_test_helper"
 
-module KubeclientNext
+module K8y
   class ClientTest < IntegrationTestCase
     KUBE_ROOT_CONFIGMAP = "kube-root-ca.crt"
     def setup

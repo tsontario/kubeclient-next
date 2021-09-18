@@ -5,7 +5,7 @@ require_relative "cluster"
 require_relative "context"
 require_relative "user"
 
-module KubeclientNext
+module K8y
   module Kubeconfig
     class Config
       ContextNotFoundError = Class.new(Error)

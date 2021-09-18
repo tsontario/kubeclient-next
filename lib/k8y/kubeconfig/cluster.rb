@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module KubeclientNext
+module K8y
   module Kubeconfig
     class Cluster
       attr_reader :name, :insecure_skip_tls_verify, :certificate_authority, :certificate_authority_data, :server

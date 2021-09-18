@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module KubeclientNext
+module K8y
   module Kubeconfig
     class Context
       attr_reader :name, :cluster, :namespace, :user

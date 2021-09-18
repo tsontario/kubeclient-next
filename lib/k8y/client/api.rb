@@ -2,7 +2,7 @@
 
 require "forwardable"
 
-module KubeclientNext
+module K8y
   module Client
     class API
       extend Forwardable

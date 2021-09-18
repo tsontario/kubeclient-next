@@ -2,7 +2,7 @@
 
 require_relative "api"
 
-module KubeclientNext
+module K8y
   module Client
     class APIs
       include Enumerable
