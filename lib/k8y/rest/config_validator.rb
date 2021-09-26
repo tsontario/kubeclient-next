@@ -1,8 +1,10 @@
+# frozen_string_literal: true
 module K8y
   module REST
     class ConfigValidator
       class ValidationError < Error
         def initialize(validation_errors)
+          super
           @message = "Kubeconfig validation failed with the following errors: " + validation_errors.join(",")
         end
       end
@@ -14,13 +16,14 @@ module K8y
         :validate_usable,
       ].freeze
 
-      def initialize(kubeconfig)
+      def initialize(kubeconfig, context:)
         @kubeconfig = kubeconfig
+        @context = context
       end
 
       def validate!
         errors = VALIDATIONS.map { |validation| send(validation) }.compact
-        raise ValidationError.new(errors) if errors.present?
+        raise ValidationError, errors if errors.present?
       end
 
       private

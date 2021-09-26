@@ -1,23 +1,34 @@
-# TODO: Move REST client and related to its own module and let K8y::Client build on top of it
+# frozen_string_literal: true
+require_relative "config_validator"
+require_relative "transport"
+require_relative "auth"
+
 module K8y
   module REST
     class Config
       class << self
-        def from_kubeconfig(kubeconfig)
-          ConfigValidator.new(kubeconfig).validate!
+        def from_kubeconfig(kubeconfig, context: nil)
+          context = context ? context : kubeconfig.current_context
+          ConfigValidator.new(kubeconfig, context: context).validate!
 
-          context = kubeconfig.current_context
-          auth_info = kubeconfig.user_for_context(context)
           cluster = kubeconfig.cluster_for_context(context)
           host = cluster.server
-          # TODO: proxy-url support
-          # TODO: override mechanism (e.g. for timeout, etc. See overrides.go in client-go)
-          # TODO: impersonate support
-          if host.scheme == "https"
+          transport = if host.scheme == "https"
+            Transport.from_kubeconfig(kubeconfig, context: context)
+          end
+          auth = Auth.from_kubeconfig(kubeconfig, context: context)
+          new(
+            host: host,
+            transport: transport,
+            auth: auth
+          )
         end
+      end
 
-        private
-
+      def initialize(host:, transport:, auth:)
+        @host = host
+        @transport = transport
+        @auth = auth
       end
     end
   end
