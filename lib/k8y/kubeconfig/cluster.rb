@@ -23,7 +23,7 @@ module K8y
         @insecure_skip_tls_verify = insecure_skip_tls_verify
         @certificate_authority = certificate_authority
         @certificate_authority_data = certificate_authority_data
-        @server = URI.parse(server)
+        @server = server
       end
     end
   end

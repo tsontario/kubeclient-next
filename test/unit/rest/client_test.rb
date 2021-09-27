@@ -13,7 +13,7 @@ module K8y
       end
 
       def test_get_path
-        with_client(host: "https://1.2.3.4/core/v1") do |client|
+        with_client(host: "https://1.2.3.4/core/v1/") do |client|
           faraday_expectations(client: client, method: :get, path: client.host)
           client.get(as: :raw)
         end
@@ -53,8 +53,9 @@ module K8y
       def test_put_path
         path = "fakeresource"
         data = { fake: "data" }
-        with_client(host: "https://1.2.3.4/core/v1") do |client|
-          faraday_expectations(client: client, method: :put, path: "#{client.host}/#{path}", data: data, headers: {})
+        with_client(host: "https://1.2.3.4/core/v1/") do |client|
+          faraday_expectations(client: client, method: :put, path: File.join(client.host, path), data: data,
+            headers: {})
           client.put("fakeresource", data: data, as: :raw)
         end
       end
@@ -95,14 +96,14 @@ module K8y
 
       private
 
-      def with_client(host: "https://1.2.3.4", auth: Auth.new, ssl: {})
-        connection = Connection.new(host: "https://1.2.3.4", auth: Auth.new, ssl: {})
+      def with_client(host: "https://1.2.3.4/", auth: Auth.new, ssl: {})
+        connection = Connection.new(host: host, auth: Auth.new, ssl: {})
         yield(Client.new(connection: connection))
       end
 
       def faraday_expectations(client:, method:, path:, returns: nil, **kwargs)
         target = client.connection.connection
-        target.expects(method).with(URI.parse(path), *kwargs.values).returns(returns)
+        target.expects(method).with(path, *kwargs.values).returns(returns)
       end
 
       def mock_faraday_response
