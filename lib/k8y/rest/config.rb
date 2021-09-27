@@ -14,7 +14,7 @@ module K8y
           ConfigValidator.new(kubeconfig, context: context).validate!
 
           cluster = kubeconfig.cluster_for_context(context)
-          host = "#{URI.join(cluster.server, path)}"
+          host = URI.join(cluster.server, path)
           transport = if host.scheme == "https"
             Transport.from_kubeconfig(kubeconfig, context: context)
           end

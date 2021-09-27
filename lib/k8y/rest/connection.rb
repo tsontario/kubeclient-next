@@ -19,10 +19,11 @@ module K8y
         end
       end
 
-      def initialize(host:, ssl:, auth:)
+      def initialize(host:, ssl:, auth:, &conn_options)
         @host = host
         @connection = Faraday.new(host, ssl: ssl) do |connection|
           auth.configure_connection(connection)
+          yield connection if block_given?
         end
       end
     end
