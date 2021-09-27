@@ -8,3 +8,5 @@ require_relative "k8y/kubeconfig"
 require_relative "k8y/group_version"
 require_relative "k8y/client"
 require_relative "k8y/rest"
+
+require 'byebug'
