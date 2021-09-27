@@ -24,7 +24,11 @@ module K8y
       end
 
       def host
-        connection.host
+        @host ||= if "#{connection.host}".end_with?("/")
+          connection.host
+        else
+          URI.join(connection.host, "/")
+        end
       end
 
       def get(path = "", headers: {}, as: :ros)
@@ -55,7 +59,7 @@ module K8y
       private
 
       def formatted_uri(path = "")
-        URI.join(connection.host, path)
+        URI.join(host, path)
       end
 
       def format_response(response, as: :ros)
