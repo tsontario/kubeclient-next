@@ -45,8 +45,8 @@ module K8y
         end
 
         {
-          client_cert: (OpenSSL::X509::Certificate.new(Base64.decode64(cert_data)) if cert_data),
-          client_key: (OpenSSL::PKey::RSA.new(Base64.decode64(key_data)) if key_data),
+          client_cert: (OpenSSL::X509::Certificate.new(cert_data) if cert_data),
+          client_key: (OpenSSL::PKey::RSA.new(key_data) if key_data),
           cert_store: cert_store,
           verify: OpenSSL::SSL::VERIFY_PEER,
         }

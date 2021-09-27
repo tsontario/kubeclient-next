@@ -34,7 +34,6 @@ module K8y
         resource_descriptions = JSON.parse(response.body)["resources"].map do |resource_description|
           ResourceDescription.from_hash(resource_description)
         end
-
         resource_descriptions.each do |resource_description|
           next if resource_description.subresource?
 
