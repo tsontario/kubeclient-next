@@ -38,6 +38,19 @@ module K8y
         @reconciled = true
       end
 
+      def to_faraday_options
+        if ca_data
+          cert_store = OpenSSL::X509::Store.new
+          cert_store.add_cert(OpenSSL::X509::Certificate.new(ca_data))
+        end
+        ssl = {
+          client_cert: (OpenSSL::X509::Certificate.new(Base64.decode64(cert_data)) if cert_data),
+          client_key: (OpenSSL::PKey::RSA.new(Base64.decode64(key_data)) if key_data),
+          cert_store: cert_store,
+          verify: OpenSSL::SSL::VERIFY_PEER,
+        }
+      end
+
       private
 
       attr_reader :reconciled

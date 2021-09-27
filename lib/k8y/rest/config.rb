@@ -6,13 +6,15 @@ require_relative "auth"
 module K8y
   module REST
     class Config
+      attr_reader :host, :transport, :auth
+
       class << self
-        def from_kubeconfig(kubeconfig, context: nil)
+        def from_kubeconfig(kubeconfig, path:)
           context = context ? context : kubeconfig.current_context
           ConfigValidator.new(kubeconfig, context: context).validate!
 
           cluster = kubeconfig.cluster_for_context(context)
-          host = cluster.server
+          host = "#{URI.join(cluster.server, path)}"
           transport = if host.scheme == "https"
             Transport.from_kubeconfig(kubeconfig, context: context)
           end

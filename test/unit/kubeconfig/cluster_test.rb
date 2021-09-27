@@ -11,7 +11,7 @@ module K8y
         cluster = Cluster.from_hash(cluster_hash)
         refute(cluster.insecure_skip_tls_verify)
         assert_equal("test-cluster", cluster.name)
-        assert_equal("fake-ca-file", cluster.certificate_authority)
+        assert_equal("fake-ca-data", cluster.certificate_authority_data)
         assert_equal(URI.parse("https://1.2.3.4"), cluster.server)
       end
 
