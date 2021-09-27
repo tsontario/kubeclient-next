@@ -7,7 +7,6 @@ module K8y
     class APIBuilderTest < TestCase
       def setup
         super
-        RESTClient.any_instance.stubs(:hardcoded_auth)
       end
 
       def test_build!
@@ -16,7 +15,7 @@ module K8y
             stub.get("https://1.2.3.4/apis/test/v1") { |_env| [200, {}, discovery_response_fixture("test_v1")] }
           end
         end
-        RESTClient.any_instance.expects(:connection).returns(mock_connection)
+        REST::Client.any_instance.expects(:connection).returns(mock_connection)
 
         config = config_fixture
         api = API.new(group_version: GroupVersion.new(group: "test", version: "v1"))

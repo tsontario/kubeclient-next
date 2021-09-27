@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module K8y
-  module Client
+  module REST
     class ResponseFormatter
       UnsupportedResponseTypeError = Class.new(Error)
 

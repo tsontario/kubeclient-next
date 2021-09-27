@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 module K8y
   module REST
-    # Auth encapsulates information/behaviour used to authenticate against a server
     class Auth
+      InvalidAuthTypeError = Class.new(Error)
+
       class << self
         def from_kubeconfig(kubeconfig, context: nil)
           context = context ? context : kubeconfig.current_context
@@ -20,11 +21,11 @@ module K8y
         end
 
         def auth_provider(auth_info)
-          # TODO: custom object
+          # TODO
         end
 
         def exec_provider(auth_info)
-          # TODO: custom object
+          # TODO
         end
       end
 
@@ -35,6 +36,43 @@ module K8y
         @password = password
         @auth_provider = auth_provider
         @exec_provider = exec_provider
+      end
+
+      def configure_connection(connection)
+        case auth_type
+        when :basic
+          connection.basic_auth(username, password)
+        when :token
+          connection.headers[:Authorization] = "Bearer #{token}"
+          # TODO...
+        end
+      end
+
+      private
+
+      attr_reader :token, :username, :password, :auth_provider, :exec_provider
+
+      # TODO: these should be subclasses of abstract Auth class
+      def auth_type
+        if username && password
+          :basic
+        elsif token
+          :token
+        elsif auth_provider
+          :auth_provider
+        elsif exec_provider
+          :exec_provider
+        else
+          :none
+        end
+      end
+
+      def basic?
+        auth_type == :basic
+      end
+
+      def token?
+        auth_type == :token
       end
     end
   end

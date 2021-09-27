@@ -2,7 +2,7 @@
 module K8y
   module REST
     class Transport
-      attr_reader :cert_data, :key_data, :ca_data
+      attr_reader :cert_file, :key_file, :ca_file, :cert_data, :key_data, :ca_data
 
       class << self
         def from_kubeconfig(kubeconfig, context: nil)
@@ -30,31 +30,45 @@ module K8y
 
       # TODO: figure out when/where base64 decoding is A: necessary and B: timely
       def reconcile!
+        return if reconciled?
         reconcile_cert_data!
         reconcile_key_data!
         reconcile_ca_data!
+
+        @reconciled = true
       end
 
       private
 
+      attr_reader :reconciled
       attr_writer :cert_data, :key_data, :ca_data
 
       def reconcile_cert_data!
-        unless cert_data
-          self.cert_data = File.read(cert_file)
+        @cert_data = if cert_data
+          Base64.decode64(cert_data)
+        elsif cert_file
+          File.read(cert_file)
         end
       end
 
       def reconcile_key_data!
-        unless key_data
-          self.key_data = File.read(key_file)
+        @key_data = if key_data
+          Base64.decode64(key_data)
+        elsif key_file
+          File.read(key_file)
         end
       end
 
       def reconcile_ca_data!
-        unless ca_data
-          self.ca_data = File.read(ca_file)
+        @ca_data = if ca_data
+          Base64.decode64(ca_data)
+        elsif ca_file
+          File.read(ca_file)
         end
+      end
+
+      def reconciled?
+        reconciled
       end
     end
   end
