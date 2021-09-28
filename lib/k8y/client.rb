@@ -4,6 +4,8 @@ require_relative "client/client"
 module K8y
   module Client
     Error = Class.new(Error)
+    ContextNotFoundError = Class.new(Error)
+    APINameConflictError = Class.new(Error)
 
     DEFAULT_GROUP_VERSIONS = [
       GroupVersion.new(group: "core", version: "v1"),

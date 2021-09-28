@@ -6,9 +6,6 @@ require_relative "apis"
 module K8y
   module Client
     class Client
-      ContextNotFoundError = Class.new(Error)
-      APINameConflictError = Class.new(Error)
-
       attr_reader :config, :context, :apis
 
       def initialize(config:, context:, group_versions: DEFAULT_GROUP_VERSIONS)
