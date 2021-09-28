@@ -28,7 +28,6 @@ module K8y
         @ca_data = ca_data
       end
 
-      # TODO: figure out when/where base64 decoding is A: necessary and B: timely
       def reconcile!
         return if reconciled?
         reconcile_cert_data!

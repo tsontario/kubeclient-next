@@ -39,7 +39,6 @@ module K8y
       end
 
       def context(context)
-        # TODO: test this line (makes cluster_for_context, user_for_context able to accept context object)
         return context if context.is_a?(Context)
 
         context = contexts.find { |c| c.name == context }

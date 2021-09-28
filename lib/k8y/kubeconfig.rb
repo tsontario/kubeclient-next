@@ -18,8 +18,8 @@ module K8y
     end
 
     def self.in_cluster_config
-      host = ENV["KUBERNETES_SERVICE_HOST"]
-      port = ENV["KUBERNETES_SERVICE_PORT"]
+      host = ENV.fetch("KUBERNETES_SERVICE_HOST", nil)
+      port = ENV.fetch("KUBERNETES_SERVICE_PORT", nil)
       raise NotInClusterError unless host && port
 
       token_data = File.read(TOKEN_FILE)

@@ -15,7 +15,13 @@ module K8y
 
       class << self
         def from_config(config)
-          new(Connection.new(host: config.host, ssl: {}, auth: config.auth))
+          new(
+            connection: Connection.new(
+              host: config.host,
+              ssl: config.transport.to_faraday_options,
+              auth: config.auth
+            )
+          )
         end
       end
 

@@ -5,6 +5,21 @@ require "test_helper"
 module K8y
   module REST
     class ClientTest < TestCase
+      def test_from_config
+        auth = Auth.new(token: "fake-token")
+        transport = Transport.new
+        config = Config.new(
+          host: "host",
+          transport: transport,
+          auth: auth
+        )
+
+        client = Client.from_config(config)
+        auth_header = "Bearer fake-token"
+        assert_equal("host", client.host)
+        assert_equal(auth_header, client.connection.connection.headers[:Authorization])
+      end
+
       def test_get_root_path
         with_client do |client|
           faraday_expectations(client: client, method: :get, path: client.host)

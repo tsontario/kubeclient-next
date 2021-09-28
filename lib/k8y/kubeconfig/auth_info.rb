@@ -18,9 +18,7 @@ module K8y
             as_user_extra: hash.fetch("as-user-extra", nil),
             username: hash.fetch("username", nil),
             password: hash.fetch("password", nil),
-            # TODO: this needs something like polymorphic classes, not just raw hash, eventually
             auth_provider: hash.fetch("auth-provider", nil),
-            # TODO: This will likely benefit from actual domain models eventually, as well.
             exec_options: hash.fetch("exec", nil),
             extensions: hash.fetch("extensions", nil)
           )

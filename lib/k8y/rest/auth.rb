@@ -29,7 +29,6 @@ module K8y
         end
       end
 
-      # TODO: this is one object that could be many kinds of auth... might be worth splitting into atomic pieces
       def initialize(token: nil, username: nil, password: nil, auth_provider: nil, exec_provider: nil)
         @token = token
         @username = username
@@ -52,7 +51,6 @@ module K8y
 
       attr_reader :token, :username, :password, :auth_provider, :exec_provider
 
-      # TODO: these should be subclasses of abstract Auth class
       def auth_type
         if username && password
           :basic
