@@ -18,7 +18,7 @@ module K8y
         bogus_v1 = API.new(group_version: GroupVersion.new(group: "bogus", version: "v1"))
         bogus_v2 = API.new(group_version: GroupVersion.new(group: "bogus", version: "v2"))
         @client.apis.expects(:apis_for_method).with(:get_boguses).returns([bogus_v1, bogus_v2])
-        assert_raises(Client::APINameConflictError) { @client.get_boguses }
+        assert_raises(APINameConflictError) { @client.get_boguses }
       end
 
       def test_method_missing_raises_no_method_error_when_no_apis_respond_to_method
