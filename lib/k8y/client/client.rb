@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "rest_client"
 require_relative "api_builder"
 require_relative "apis"
 
@@ -20,10 +19,6 @@ module K8y
 
       def discover!
         apis.each { |api| APIBuilder.new(api: api, config: config, context: context.name).build! }
-      end
-
-      def set_context(context_name)
-        @context = config.context(context_name)
       end
 
       def method_missing(method_name, *args, &block)

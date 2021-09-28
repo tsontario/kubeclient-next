@@ -14,10 +14,6 @@ module K8y
         assert_equal(@client.context.name, config_fixture.contexts.first.name)
       end
 
-      def test_context_setter_raises_if_non_existent_context_given
-        assert_raises(Kubeconfig::Config::ContextNotFoundError) { @client.set_context("bogus") }
-      end
-
       def test_method_missing_raises_when_multiple_apis_expose_same_method
         bogus_v1 = API.new(group_version: GroupVersion.new(group: "bogus", version: "v1"))
         bogus_v2 = API.new(group_version: GroupVersion.new(group: "bogus", version: "v2"))

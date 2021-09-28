@@ -3,7 +3,7 @@
 require "test_helper"
 
 module K8y
-  module Client
+  module REST
     class ResponseFormatterTest < TestCase
       def test_format_raw
         response = mock.responds_like_instance_of(Faraday::Response)

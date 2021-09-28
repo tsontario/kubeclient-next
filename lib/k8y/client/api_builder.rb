@@ -27,12 +27,13 @@ module K8y
       end
 
       def build!
-        rest_client = RESTClient.new(config: config, context: context, path: api.path)
+        rest_config = REST::Config.from_kubeconfig(config, path: api.path)
+        rest_client = REST::Client.new(connection: REST::Connection.from_config(rest_config))
+
         response = rest_client.get(as: :raw)
         resource_descriptions = JSON.parse(response.body)["resources"].map do |resource_description|
           ResourceDescription.from_hash(resource_description)
         end
-
         resource_descriptions.each do |resource_description|
           next if resource_description.subresource?
 

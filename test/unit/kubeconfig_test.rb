@@ -16,8 +16,8 @@ module K8y
       assert_equal(1, clusters.length)
       cluster = clusters.first
       assert_equal("test-cluster", cluster.name)
-      assert_equal("fake-ca-file", cluster.certificate_authority)
-      assert_equal(URI.parse("https://1.2.3.4"), cluster.server)
+      assert_equal("fake-ca-data", cluster.certificate_authority_data)
+      assert_equal("https://1.2.3.4", cluster.server)
       refute(cluster.insecure_skip_tls_verify)
 
       contexts = config.contexts
@@ -27,6 +27,17 @@ module K8y
       assert_equal("test-cluster", context.cluster)
       assert_equal("test-ns", context.namespace)
       assert_equal("test-user", context.user)
+    end
+
+    def test_in_cluster_config
+      stub_in_cluster_config
+      config = Kubeconfig.in_cluster_config
+      cluster = config.cluster(Kubeconfig::IN_CLUSTER_NAME)
+      user = config.user(Kubeconfig::IN_CLUSTER_NAME)
+
+      assert_equal("https://host:port", cluster.server)
+      assert_equal("bogus-ca-data", cluster.certificate_authority_data)
+      assert_equal("bogus-token", user.auth_info.token)
     end
   end
 end

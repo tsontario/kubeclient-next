@@ -28,7 +28,7 @@ module K8y
         raise Error, e
       end
 
-      def initialize(api_version:, kind:, preferences:, clusters:, contexts:, users:, current_context:)
+      def initialize(api_version: "v1", kind: "Config", preferences: {}, clusters:, contexts:, users:, current_context:)
         @api_version = api_version
         @kind = kind
         @preferences = preferences
@@ -38,9 +38,11 @@ module K8y
         @current_context = current_context
       end
 
-      def context(name)
-        context = contexts.find { |c| c.name == name }
-        raise ContextNotFoundError, "Could not find context #{name} in config" unless context
+      def context(context)
+        return context if context.is_a?(Context)
+
+        context = contexts.find { |c| c.name == context }
+        raise ContextNotFoundError, "Could not find context #{context} in config" unless context
         context
       end
 
@@ -56,13 +58,13 @@ module K8y
         user
       end
 
-      def cluster_for_context(context_name)
-        cluster_name = context(context_name).cluster
+      def cluster_for_context(context)
+        cluster_name = context(context).cluster
         cluster(cluster_name)
       end
 
-      def user_for_context(context_name)
-        user(context(context_name).user)
+      def user_for_context(context)
+        user(context(context).user)
       end
     end
   end

@@ -57,6 +57,14 @@ module K8y
       File.expand_path(File.join("fixtures", "integration", "resources", "#{name}.yml"), __dir__)
     end
 
+    def stub_in_cluster_config
+      ENV.expects(:fetch).with("KUBERNETES_SERVICE_HOST", nil).returns("host")
+      ENV.expects(:fetch).with("KUBERNETES_SERVICE_PORT", nil).returns("port")
+
+      File.expects(:read).with(Kubeconfig::ROOT_CA_FILE).returns("bogus-ca-data")
+      File.expects(:read).with(Kubeconfig::TOKEN_FILE).returns("bogus-token")
+    end
+
     private
 
     def disable_net_connect?
