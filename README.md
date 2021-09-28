@@ -78,7 +78,9 @@ rest_client.get("healthz", as: :raw)
 # Testing
 
 Basic test suite: `bundle exec rake`
+
 Integration test suite: `bundle exec rake test_integration` (requires a running cluster. Defaults to searching for a `kind` config, but can be overridden by setting `K8Y_TEST_CONFIG` and `K8Y_TEST_CONTEXT` environment variables)
+
 A future goal is to test in-cluster behaviour by running a custom Github action, but that hasn't been done yet.
 
 # Contributing
