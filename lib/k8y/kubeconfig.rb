@@ -29,7 +29,7 @@ module K8y
         auth_info: auth_info
       )
 
-      ca_data = File.read(ROOT_CA_FILE)
+      ca_data = Base64.encode64(File.read(ROOT_CA_FILE))
       cluster = Cluster.new(
         name: IN_CLUSTER_NAME,
         insecure_skip_tls_verify: false,

@@ -36,7 +36,7 @@ module K8y
       user = config.user(Kubeconfig::IN_CLUSTER_NAME)
 
       assert_equal("https://host:port", cluster.server)
-      assert_equal("bogus-ca-data", cluster.certificate_authority_data)
+      assert_equal(Base64.encode64("bogus-ca-data"), cluster.certificate_authority_data)
       assert_equal("bogus-token", user.auth_info.token)
     end
   end
