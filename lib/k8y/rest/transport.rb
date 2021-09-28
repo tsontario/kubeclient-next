@@ -74,7 +74,7 @@ module K8y
 
       def reconcile_ca_data!
         @ca_data = if ca_data
-          Base64.decode64(ca_data)
+          ca_data
         elsif ca_file
           File.read(ca_file)
         end
