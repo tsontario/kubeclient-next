@@ -6,7 +6,7 @@ module K8y
   module REST
     class ClientTest < TestCase
       def test_from_config
-        auth = Auth.new(token: "fake-token")
+        auth = Auth::Token.new(token: "fake-token")
         transport = Transport.new
         config = Config.new(
           host: "host",
@@ -122,8 +122,8 @@ module K8y
 
       private
 
-      def with_client(host: "https://1.2.3.4/", auth: Auth.new, ssl: {})
-        connection = Connection.new(host: host, auth: Auth.new, ssl: {})
+      def with_client(host: "https://1.2.3.4/", auth: Auth::AuthBase.new, ssl: {})
+        connection = Connection.new(host: host, auth: auth, ssl: {})
         yield(Client.new(connection: connection))
       end
 
