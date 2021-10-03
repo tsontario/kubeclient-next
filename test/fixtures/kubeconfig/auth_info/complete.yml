@@ -1,3 +1,4 @@
+---
 client-certificate: "test-client-certificate"
 client-certificate-data: "test-client-certificate-data"
 client-key: "test-client-key"

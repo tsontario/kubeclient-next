@@ -6,8 +6,7 @@ module K8y
   module Kubeconfig
     class AuthInfoTest < TestCase
       def test_from_hash_success
-        auth_info_hash = YAML.load_file(kubeconfig_fixture_path("complete", sub_dir: "auth_info"))
-        auth_info = AuthInfo.from_hash(auth_info_hash)
+        auth_info = auth_info_fixture("complete")
         assert_equal("test-client-certificate", auth_info.client_certificate)
         assert_equal("test-client-certificate-data", auth_info.client_certificate_data)
         assert_equal("test-client-key", auth_info.client_key)
