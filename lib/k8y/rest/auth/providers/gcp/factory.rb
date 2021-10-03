@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "application_default_provider"
+require_relative "command_provider"
+
 module K8y
   module REST
     module Auth
@@ -11,7 +14,7 @@ module K8y
             MissingConfigError = Class.new(Error)
 
             def from_auth_provider(provider)
-              config = provider["config"]
+              config = provider[:config]
               raise MissingConfigError unless config
 
               # see https://github.com/kubernetes/client-go/blob/master/plugin/pkg/client/auth/gcp/gcp.go#L58
