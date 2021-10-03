@@ -7,7 +7,8 @@ module K8y
     class APIBuilderTest < TestCase
       def test_build!
         REST::Connection.expects(:from_config).returns(
-          REST::Connection.new(host: "https://1.2.3.4/apis/test/v1/", auth: REST::Auth.new, ssl: {}) do |builder|
+          REST::Connection.new(host: "https://1.2.3.4/apis/test/v1/", auth: REST::Auth::AuthBase.new,
+            ssl: {}) do |builder|
             builder.adapter(:test, Faraday::Adapter::Test::Stubs.new) do |stub|
               stub.get("https://1.2.3.4/apis/test/v1/") { |_env| [200, {}, discovery_response_fixture("test_v1")] }
             end

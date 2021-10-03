@@ -1,0 +1,21 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: fake-ca-data
+    insecure-skip-tls-verify: false
+    server: https://1.2.3.4
+  name: test-cluster
+contexts:
+- context:
+    cluster: test-cluster
+    namespace: test-ns
+    user: test-user
+  name: test
+current-context: test
+kind: Config
+preferences: 
+  color: true
+users:
+- name: test-user
+  user:
+    token: bogus-token

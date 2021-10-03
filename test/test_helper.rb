@@ -36,6 +36,11 @@ module K8y
       K8y::Kubeconfig.from_file(fixture_file)
     end
 
+    def auth_info_fixture(name)
+      auth_info_hash = YAML.load_file(kubeconfig_fixture_path(name, sub_dir: "auth_info"))
+      K8y::Kubeconfig::AuthInfo.from_hash(auth_info_hash)
+    end
+
     def kubeconfig_fixture_path(name, sub_dir: "")
       File.expand_path(File.join("fixtures", "kubeconfig", sub_dir, "#{name}.yml"), __dir__)
     end
