@@ -6,11 +6,14 @@ module K8y
   module REST
     module Auth
       module Providers
+        Error = Class.new(Error)
+
         class Factory
-          def from_provider(provider)
-            case provider["name"]
+          UnnamedProviderError = Class.new(Error)
+          def from_auth_provider(provider)
+            case provider[:name]
             when "gcp"
-              GCP::Factory.from_provider(provider)
+              GCP::Factory.new.from_auth_provider(provider)
             when nil
               raise UnnamedProviderError
             end

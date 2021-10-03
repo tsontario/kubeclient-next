@@ -2,9 +2,12 @@
 
 module K8y
   module Auth
-    class ProviderBase
-      def token
-        raise NotImplementedError
+    module Providers
+      class ProviderBase
+        # TODO: public API not finalized; subject to change
+        def token
+          raise NotImplementedError
+        end
       end
     end
   end

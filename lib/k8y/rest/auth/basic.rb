@@ -13,7 +13,7 @@ module K8y
         end
 
         def configure_connection(connection)
-          connection.basic_auth(username, password)
+          connection.request(:authorization, :basic, username, password)
         end
 
         private
