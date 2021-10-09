@@ -2,6 +2,8 @@
 
 require "forwardable"
 
+require_relative "auth/token_store"
+
 module K8y
   module REST
     class Connection
@@ -20,6 +22,7 @@ module K8y
       end
 
       def initialize(host:, ssl:, auth:, &conn_options)
+        # TODO: host is the wrong thing... basepath? then #host is just URI(basepath).hostname
         @host = host
         @auth = auth
         @connection = Faraday.new(host, ssl: ssl) do |connection|

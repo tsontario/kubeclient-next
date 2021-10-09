@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "integration_test_helper"
+require "cluster_integration_test_helper"
 
 module K8y
   module Client

@@ -11,14 +11,10 @@ module K8y
           Error = Class.new(Error)
 
           class Factory
-            MissingConfigError = Class.new(Error)
-
             def from_auth_provider(provider)
               config = provider.config
-              raise MissingConfigError unless config
-
               # see https://github.com/kubernetes/client-go/blob/master/plugin/pkg/client/auth/gcp/gcp.go#L58
-              if config.public_send(:"cmd-path")
+              if config&.public_send(:"cmd-path")
                 CommandProvider.new(
                   access_token: config.public_send(:"access-token"),
                   cmd_args: config.public_send(:"cmd-args"),

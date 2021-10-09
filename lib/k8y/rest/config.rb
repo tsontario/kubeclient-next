@@ -9,7 +9,7 @@ module K8y
       attr_reader :host, :transport, :auth
 
       class << self
-        def from_kubeconfig(kubeconfig, context:, path:)
+        def from_kubeconfig(kubeconfig, context: nil, path: "/")
           context = context ? context : kubeconfig.current_context
           ConfigValidator.new(kubeconfig, context: context).validate!
 
