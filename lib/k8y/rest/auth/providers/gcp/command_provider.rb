@@ -25,6 +25,9 @@ module K8y
               @token_key = token_key
             end
 
+            def generate_token
+            end
+
             private
 
             def configure_connection(connection)

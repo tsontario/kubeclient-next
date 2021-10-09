@@ -19,12 +19,18 @@ module K8y
               connection.headers[:Authorization] = "Bearer #{token}"
             end
 
+            def generate_token!
+              token(force: true)
+            end
+
             private
 
-            def token
+            def token(force: false)
+              return @token if token.present? && !force
+
               creds = Google::Auth.get_application_default(SCOPES)
               creds.apply({})
-              creds.access_token
+              @token = creds.access_token
             end
           end
         end
