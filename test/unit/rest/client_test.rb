@@ -109,14 +109,14 @@ module K8y
         end
       end
 
-      def test_rest_method_returns_recursive_open_struct_object_by_default
+      def test_rest_method_returns_k8y_resource_object_by_default
         host = "https://1.2.3.4/"
         mock_response = mock_faraday_response
         mock_response.expects(:body).returns(JSON.dump({ fake: "data" }))
         with_client(host: host) do |client|
           faraday_expectations(client: client, method: :get, path: host, returns: mock_response)
           response = client.get
-          assert(response.is_a?(RecursiveOpenStruct))
+          assert(response.is_a?(Resource))
         end
       end
 

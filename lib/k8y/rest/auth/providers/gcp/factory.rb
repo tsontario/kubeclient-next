@@ -14,18 +14,18 @@ module K8y
             MissingConfigError = Class.new(Error)
 
             def from_auth_provider(provider)
-              config = provider[:config]
+              config = provider.config
               raise MissingConfigError unless config
 
               # see https://github.com/kubernetes/client-go/blob/master/plugin/pkg/client/auth/gcp/gcp.go#L58
-              if config[:"cmd-path"]
+              if config.public_send(:"cmd-path")
                 CommandProvider.new(
-                  access_token: config[:"access-token"],
-                  cmd_args: config[:"cmd-args"],
-                  cmd_path: config[:"cmd-path"],
-                  expiry: config[:expiry],
-                  expiry_key: config[:"expiry-key"],
-                  token_key: config[:"token-key"]
+                  access_token: config.public_send(:"access-token"),
+                  cmd_args: config.public_send(:"cmd-args"),
+                  cmd_path: config.public_send(:"cmd-path"),
+                  expiry: config.expiry,
+                  expiry_key: config.public_send(:"expiry-key"),
+                  token_key: config.public_send(:"token-key"),
                 )
               else
                 ApplicationDefaultProvider.new

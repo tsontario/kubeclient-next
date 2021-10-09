@@ -13,7 +13,7 @@ module K8y
       def format(as: :ros)
         case as
         when :ros
-          build_recursive_open_struct_response(response.body)
+          build_k8y_resource_response(response.body)
         when :raw
           response
         else
@@ -23,14 +23,14 @@ module K8y
 
       private
 
-      def build_recursive_open_struct_response(body)
+      def build_k8y_resource_response(body)
         data = JSON.parse(body)
         if item_list?(data)
-          data.fetch("items").map { |item| RecursiveOpenStruct.new(item, recurse_over_arrays: true) }
+          data.fetch("items").map { |item| Resource.new(item) }
         elsif resources_list?(data)
-          data.fetch("resources").map { |item| RecursiveOpenStruct.new(item, recurse_over_arrays: true) }
+          data.fetch("resources").map { |item| Resource.new(item) }
         else
-          RecursiveOpenStruct.new(data, recurse_over_arrays: true)
+          Resource.new(data)
         end
       end
 

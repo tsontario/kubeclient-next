@@ -2,7 +2,6 @@
 
 require "faraday"
 require "base64"
-require "recursive_open_struct"
 
 require_relative "config"
 require_relative "connection"

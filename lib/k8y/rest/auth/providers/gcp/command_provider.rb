@@ -25,15 +25,20 @@ module K8y
               @token_key = token_key
             end
 
+            private
+
+            def configure_connection(connection)
+              connection.headers[:Authorization] = "Bearer #{token}"
+            end
+
             def token
               out, err, st = Open3.capture3(cmd, *args.split)
 
               raise "exec command failed: #{err}" unless st.success?
 
               extract_token(out, token_key)
+              connection.headers[:Authorization] = "Bearer #{token}"
             end
-
-            private
 
             def extract_token(output, key)
               path =

@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+require_relative "auth_provider"
+
 module K8y
   module Kubeconfig
     class AuthInfo
@@ -18,7 +21,7 @@ module K8y
             as_user_extra: hash.fetch("as-user-extra", nil),
             username: hash.fetch("username", nil),
             password: hash.fetch("password", nil),
-            auth_provider: hash.fetch("auth-provider", nil),
+            auth_provider: AuthProvider.new(hash.fetch("auth-provider", nil)),
             exec_options: hash.fetch("exec", nil),
             extensions: hash.fetch("extensions", nil)
           )

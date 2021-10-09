@@ -13,7 +13,7 @@ module K8y
             Basic.new(username: auth_info.username, password: auth_info.password)
           elsif auth_info.token
             Token.new(token: auth_info.token)
-          elsif auth_info.auth_provider
+          elsif auth_info.auth_provider.present?
             Providers::Factory.new.from_auth_provider(auth_info.auth_provider)
           else
             AuthBase.new
