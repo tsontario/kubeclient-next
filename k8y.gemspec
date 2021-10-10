@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency("activesupport", "~> 6.0")
-  spec.add_dependency("faraday", "~> 1.6")
+  spec.add_dependency("faraday", "~> 1.8")
   spec.add_dependency("railties", "~> 6.0")
   spec.add_dependency("recursive-open-struct", "~>1.1")
   spec.add_dependency("googleauth")
