@@ -16,20 +16,12 @@ module K8y
             ]
 
             def configure_connection(connection)
-              host = URI(connection.host).hostname
-              TokenStore[host] ||= token
-              connection.headers[:Authorization] = "Bearer #{TokenStore[host]}"
-            end
-
-            def generate_token!
-              token(force: true)
+              super
             end
 
             private
 
-            def token(force: false)
-              return @token if @token.present? && !force
-
+            def token
               creds = Google::Auth.get_application_default(SCOPES)
               creds.apply({})
               @token = creds.access_token

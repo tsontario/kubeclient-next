@@ -9,7 +9,7 @@ module K8y
     class Connection
       extend Forwardable
 
-      attr_reader :host, :connection
+      attr_reader :base_path, :connection
 
       VERBS = [:get, :post, :put, :patch, :delete]
       def_delegators(:connection, *VERBS)
@@ -17,15 +17,14 @@ module K8y
       class << self
         # Initialize a Connection object using a provided REST::Config instance
         def from_config(config)
-          new(host: config.host, ssl: config.transport.to_faraday_options, auth: config.auth)
+          new(base_path: config.base_path, ssl: config.transport.to_faraday_options, auth: config.auth)
         end
       end
 
-      def initialize(host:, ssl:, auth:, &conn_options)
-        # TODO: host is the wrong thing... basepath? then #host is just URI(basepath).hostname
-        @host = host
+      def initialize(base_path:, ssl:, auth:, &conn_options)
+        @base_path = base_path
         @auth = auth
-        @connection = Faraday.new(host, ssl: ssl) do |connection|
+        @connection = Faraday.new(base_path, ssl: ssl) do |connection|
           connection.use(Faraday::Response::RaiseError)
           auth.configure_connection(connection)
           yield connection if block_given?
@@ -34,7 +33,11 @@ module K8y
 
       def generate_token!
         auth.generate_token! if auth.respond_to?(:generate_token!)
-        @connection.tap { |connection| auth.configure_connection(connection) }
+        auth.configure_connection(connection)
+      end
+
+      def host
+        URI(base_path).host
       end
 
       private

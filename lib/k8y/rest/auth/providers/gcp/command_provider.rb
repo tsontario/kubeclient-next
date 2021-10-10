@@ -25,14 +25,7 @@ module K8y
               @token_key = token_key
             end
 
-            def generate_token
-            end
-
             private
-
-            def configure_connection(connection)
-              connection.headers[:Authorization] = "Bearer #{token}"
-            end
 
             def token
               out, err, st = Open3.capture3(cmd, *args.split)
