@@ -6,8 +6,7 @@ module K8y
     class TokenRefreshTest < IntegrationTestCase
       def test_attempt_regenerate_token_on_401_request_then_raise_401_if_token_still_invalid
         config = Config.from_kubeconfig(fixture)
-        Client.from_config(config)
-        # TODO...
+        client = Client.from_config(config)
       end
 
       private

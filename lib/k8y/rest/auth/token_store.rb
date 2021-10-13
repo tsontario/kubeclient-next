@@ -6,17 +6,21 @@ module K8y
       class TokenStore
         class << self
           def [](hostname)
-            store[hostname]
+            lock.synchronize { store[hostname] }
           end
 
           def []=(hostname, token)
-            store[hostname] = token
+            lock.synchronize { store[hostname] = token }
           end
 
           private
 
           def store
             @store ||= {}
+          end
+
+          def lock
+            @lock ||= Mutext.new
           end
         end
       end

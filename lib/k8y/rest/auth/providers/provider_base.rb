@@ -13,6 +13,8 @@ module K8y
             TokenStore[connection.host] = token
           end
 
+          private
+
           def token
             raise NotImplementedError, "subclasses of ProviderBase must implement #token"
           end
