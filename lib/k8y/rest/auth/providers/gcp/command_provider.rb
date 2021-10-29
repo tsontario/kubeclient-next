@@ -33,7 +33,6 @@ module K8y
               raise "exec command failed: #{err}" unless st.success?
 
               extract_token(out, token_key)
-              connection.headers[:Authorization] = "Bearer #{token}"
             end
 
             def extract_token(output, key)
