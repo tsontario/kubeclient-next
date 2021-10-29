@@ -3,10 +3,6 @@
 module K8y
   module REST
     class RequestWrapper
-      def initialize(wrapped)
-        @wrapped = wrapped
-      end
-
       def handle(exception, retry_unauthorized: false)
         code = exception.response_status
         if code == 401 && retry_unauthorized

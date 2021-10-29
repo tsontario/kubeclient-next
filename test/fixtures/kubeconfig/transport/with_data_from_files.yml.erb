@@ -1,0 +1,22 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: <%= File.expand_path("../ca_file", __FILE__) %>
+    insecure-skip-tls-verify: false
+    server: https://1.2.3.4
+  name: test-cluster
+contexts:
+- context:
+    cluster: test-cluster
+    namespace: test-ns
+    user: test-user
+  name: test
+current-context: test
+kind: Config
+preferences: 
+  color: true
+users:
+- name: test-user
+  user:
+    client-certificate: <%= File.expand_path("../cert_file", __FILE__) %>
+    client-key: <%= File.expand_path("../key_file", __FILE__) %>

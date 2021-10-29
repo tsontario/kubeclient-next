@@ -31,7 +31,7 @@ module K8y
 
       def initialize(connection:)
         @connection = connection
-        @request_wrapper = RequestWrapper.new(self)
+        @request_wrapper = RequestWrapper.new
       end
 
       def get(path = "", headers: {}, as: :ros)
