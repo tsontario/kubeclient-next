@@ -8,8 +8,8 @@
 /tmp/
 /.DS_Store
 
-# Rake-able scratch working directory
-/scratch
+# Debug sessions
+debug_session.rb
 
 # Ignore lockfile for gem
 Gemfile.lock

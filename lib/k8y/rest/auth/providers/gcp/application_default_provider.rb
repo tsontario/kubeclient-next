@@ -15,10 +15,6 @@ module K8y
               "https://www.googleapis.com/auth/userinfo.email",
             ]
 
-            def configure_connection(connection)
-              super
-            end
-
             private
 
             def token
