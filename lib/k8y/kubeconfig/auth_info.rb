@@ -7,7 +7,6 @@ module K8y
     class AuthInfo
       attr_reader :client_certificate, :client_certificate_data, :client_key, :client_key_data, :token, :token_file,
         :as, :as_groups, :as_user_extra, :username, :password, :auth_provider, :exec_options, :extensions,
-
         def self.from_hash(hash)
           new(
             client_certificate: hash.fetch("client-certificate", nil),

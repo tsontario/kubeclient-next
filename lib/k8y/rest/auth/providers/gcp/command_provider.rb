@@ -39,7 +39,7 @@ module K8y
             def extract_token(output, key)
               path =
                 key
-                  .gsub(/\A{(.*)}\z/, '\\1') # {.foo.bar} -> .foo.bar
+                  .gsub(/\A{(.*)}\z/, "\\1") # {.foo.bar} -> .foo.bar
                   .sub(/\A\./, "") # .foo.bar -> foo.bar
                   .split(".")
               JSON.parse(output).dig(*path)

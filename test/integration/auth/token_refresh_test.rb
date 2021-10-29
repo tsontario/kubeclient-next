@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "integration_test_helper"
 
 module K8y
@@ -47,9 +48,7 @@ module K8y
 
       def with_stubbed_client(client, &block)
         stubs = Faraday::Adapter::Test::Stubs.new
-        client.connection.connection.adapter(:test, stubs) do |stub|
-          yield stub
-        end
+        client.connection.connection.adapter(:test, stubs, &block)
         stubs
       end
 

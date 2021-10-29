@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "auth_info"
 
 module K8y

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module K8y
   class GroupVersion
     attr_reader :group, :version

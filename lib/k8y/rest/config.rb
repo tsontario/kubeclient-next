@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "config_validator"
 require_relative "transport"
 require_relative "auth"

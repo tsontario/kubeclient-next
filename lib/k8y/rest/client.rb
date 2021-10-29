@@ -91,7 +91,6 @@ module K8y
           rescue Faraday::Error => e
             request_wrapper.handle(e, retry_unauthorized: true)
           end
-
         rescue RetriableUnauthorizedError
           connection.generate_token!
           yield
