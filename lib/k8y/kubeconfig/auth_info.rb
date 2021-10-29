@@ -44,6 +44,18 @@ module K8y
         @exec_options = exec_options
         @extensions = extensions
       end
+
+      def strategy
+        if username && password
+          :basic
+        elsif token
+          :token
+        elsif auth_provider.present?
+          :auth_provider
+        else
+          :default
+        end
+      end
     end
   end
 end
