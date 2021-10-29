@@ -10,6 +10,7 @@ module K8y
       extend Forwardable
 
       attr_reader :base_path, :connection
+      attr_accessor :token_store
 
       VERBS = [:get, :post, :put, :patch, :delete]
       def_delegators(:connection, *VERBS)
@@ -32,8 +33,7 @@ module K8y
       end
 
       def generate_token!
-        auth.generate_token! if auth.respond_to?(:generate_token!)
-        auth.configure_connection(connection)
+        auth.generate_token!(self) if auth.respond_to?(:generate_token!)
       end
 
       def host

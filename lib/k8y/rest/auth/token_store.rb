@@ -20,7 +20,7 @@ module K8y
           end
 
           def lock
-            @lock ||= Mutext.new
+            @lock ||= Mutex.new
           end
         end
       end

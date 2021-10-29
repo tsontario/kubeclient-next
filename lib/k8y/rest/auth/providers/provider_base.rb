@@ -9,7 +9,7 @@ module K8y
             connection.request(:authorization, "Bearer", -> { TokenStore[connection.host] ||= token })
           end
 
-          def regenerate_token!
+          def generate_token!(connection)
             TokenStore[connection.host] = token
           end
 

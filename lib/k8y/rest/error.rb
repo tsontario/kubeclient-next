@@ -6,6 +6,7 @@ module K8y
     HTTPError = Class.new(Error)
     ClientError = Class.new(HTTPError)
     NotFoundError = Class.new(ClientError)
+    RetriableUnauthorizedError = Class.new(ClientError)
     UnauthorizedError = Class.new(ClientError)
     ServerError = Class.new(HTTPError)
   end
