@@ -8,17 +8,17 @@ For maintainers, the goal is to provide a highly testable, modular, and loosely 
 
 ## Table of contents
 
-**Basic usage**
+[**Basic usage**](#basic-usage)
 * [From a Config file](#from-a-config-file)
 * [From in-cluster](#from-in-cluster)
 * [Client options](#client-options)
   * [Kubeconfig](#kubeconfig)
   * [Faraday connection settings](#faraday-connection-settings)
 
-**Lower level usage**
+[**Lower level usage**](#lower-level-usage)
 * [REST client](#rest-client)
 
-**Testing & contributing**
+[**Testing and contributing**](#testing-and-contributing)
 * [Test suite](#test-suite)
 * [Contributing](#contributing)
 
@@ -111,7 +111,7 @@ rest_client = K8y::REST::Client.from_config(rest_config)
 rest_client.get("healthz", as: :raw)
 ```
 
-# Testing & contributing
+# Testing and contributing
 
 ## Test suite*
 
