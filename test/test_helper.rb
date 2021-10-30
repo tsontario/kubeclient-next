@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "simplecov"
 SimpleCov.start
 
@@ -41,8 +42,9 @@ module K8y
       K8y::Kubeconfig::AuthInfo.from_hash(auth_info_hash)
     end
 
-    def kubeconfig_fixture_path(name, sub_dir: "")
-      File.expand_path(File.join("fixtures", "kubeconfig", sub_dir, "#{name}.yml"), __dir__)
+    def kubeconfig_fixture_path(name, sub_dir: "", erb: false)
+      erb_suffix = erb ? ".erb" : ""
+      File.expand_path(File.join("fixtures", "kubeconfig", sub_dir, "#{name}.yml#{erb_suffix}"), __dir__)
     end
 
     # Use raw JSON strings as that's what we expect to receive in production

@@ -30,9 +30,9 @@ module K8y
         assert_instance_of(Auth::Token, Auth.from_auth_info(auth_info))
       end
 
-      def test_from_auth_info_calls_auth_provider_factory_if_auth_provider_present
+      def test_from_auth_info_return_auth_base_if_no_other_auth_present
         auth_info = auth_info_fixture("auth_provider_empty")
-        Auth::Providers::Factory.any_instance.expects(:from_auth_provider)
+        Auth::AuthBase.expects(:new)
         Auth.from_auth_info(auth_info)
       end
     end

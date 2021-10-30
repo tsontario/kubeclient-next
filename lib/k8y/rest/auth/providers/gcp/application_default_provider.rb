@@ -15,14 +15,12 @@ module K8y
               "https://www.googleapis.com/auth/userinfo.email",
             ]
 
-            # #get_application_default actually returns a full oauth2 token payload
-            # This gives us, among other things, a refresh token, that we should be
-            # able to hold on to transparently keep client connections alive and
-            # healthy.
+            private
+
             def token
               creds = Google::Auth.get_application_default(SCOPES)
               creds.apply({})
-              creds.access_token
+              @token = creds.access_token
             end
           end
         end

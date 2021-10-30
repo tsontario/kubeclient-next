@@ -11,6 +11,7 @@ as-user-extra:
   test-key: test-value
 username: "test-username"
 password: "test-password"
-auth-provider: "test-auth-provider"
+auth-provider: 
+  name: "test-auth-provider"
 exec: "test-exec"
 extensions: "test-extensions"

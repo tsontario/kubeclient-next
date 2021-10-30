@@ -1,10 +1,12 @@
 # frozen_string_literal: true
+
+require_relative "auth_provider"
+
 module K8y
   module Kubeconfig
     class AuthInfo
       attr_reader :client_certificate, :client_certificate_data, :client_key, :client_key_data, :token, :token_file,
         :as, :as_groups, :as_user_extra, :username, :password, :auth_provider, :exec_options, :extensions,
-
         def self.from_hash(hash)
           new(
             client_certificate: hash.fetch("client-certificate", nil),
@@ -18,7 +20,7 @@ module K8y
             as_user_extra: hash.fetch("as-user-extra", nil),
             username: hash.fetch("username", nil),
             password: hash.fetch("password", nil),
-            auth_provider: hash.fetch("auth-provider", nil),
+            auth_provider: AuthProvider.new(hash.fetch("auth-provider", nil)),
             exec_options: hash.fetch("exec", nil),
             extensions: hash.fetch("extensions", nil)
           )
@@ -41,6 +43,18 @@ module K8y
         @auth_provider = auth_provider
         @exec_options = exec_options
         @extensions = extensions
+      end
+
+      def strategy
+        if username && password
+          :basic
+        elsif token
+          :token
+        elsif auth_provider.present?
+          :auth_provider
+        else
+          :default
+        end
       end
     end
   end

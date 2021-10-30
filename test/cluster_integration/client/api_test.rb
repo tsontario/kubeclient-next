@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "integration_test_helper"
+require "cluster_integration_test_helper"
 
 module K8y
   module Client
@@ -41,8 +41,7 @@ module K8y
         create_from_fixture("configmap")
         delete_result = client.delete_configmap(name: "test-configmap", namespace: @namespace)
         assert_equal("Success", delete_result.status)
-        get_result = client.get_configmap(name: "test-configmap", namespace: @namespace)
-        assert_equal("NotFound", get_result.reason)
+        assert_raises(REST::NotFoundError) { client.get_configmap(name: "test-configmap", namespace: @namespace) }
       end
 
       def test_update_configmap

@@ -11,7 +11,7 @@ module K8y
         class Factory
           UnnamedProviderError = Class.new(Error)
           def from_auth_provider(provider)
-            case provider[:name]
+            case provider.name
             when "gcp"
               GCP::Factory.new.from_auth_provider(provider)
             when nil

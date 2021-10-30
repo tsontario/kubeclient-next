@@ -9,11 +9,12 @@ module K8y
     module Auth
       class Factory
         def from_auth_info(auth_info)
-          if auth_info.username && auth_info.password
+          case auth_info.strategy
+          when :basic
             Basic.new(username: auth_info.username, password: auth_info.password)
-          elsif auth_info.token
+          when :token
             Token.new(token: auth_info.token)
-          elsif auth_info.auth_provider
+          when :auth_provider
             Providers::Factory.new.from_auth_provider(auth_info.auth_provider)
           else
             AuthBase.new

@@ -25,6 +25,8 @@ module K8y
               @token_key = token_key
             end
 
+            private
+
             def token
               out, err, st = Open3.capture3(cmd, *args.split)
 
@@ -33,12 +35,10 @@ module K8y
               extract_token(out, token_key)
             end
 
-            private
-
             def extract_token(output, key)
               path =
                 key
-                  .gsub(/\A{(.*)}\z/, '\\1') # {.foo.bar} -> .foo.bar
+                  .gsub(/\A{(.*)}\z/, "\\1") # {.foo.bar} -> .foo.bar
                   .sub(/\A\./, "") # .foo.bar -> foo.bar
                   .split(".")
               JSON.parse(output).dig(*path)

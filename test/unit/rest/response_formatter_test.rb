@@ -26,14 +26,11 @@ module K8y
 
         resources = ResponseFormatter.new(response).format(as: :ros)
         expected = JSON.parse(body)["resources"].map do |resource|
-          RecursiveOpenStruct.new(resource, recurse_over_arrays: true)
+          Resource.new(resource)
         end
         assert_equal(expected, resources)
         expected_names = ["testresources", "moretestresources"]
         resources.each { |resource| assert(expected_names.include?(resource.name)) }
-      end
-
-      def test_formate_ros_collection_of_items
       end
     end
   end

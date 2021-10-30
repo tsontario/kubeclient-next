@@ -18,7 +18,7 @@ module K8y
         assert_equal({ "test-key" => "test-value" }, auth_info.as_user_extra)
         assert_equal("test-username", auth_info.username)
         assert_equal("test-password", auth_info.password)
-        assert_equal("test-auth-provider", auth_info.auth_provider)
+        assert_equal(AuthProvider.new(name: "test-auth-provider"), auth_info.auth_provider)
         assert_equal("test-exec", auth_info.exec_options)
         assert_equal("test-extensions", auth_info.extensions)
       end
