@@ -27,6 +27,7 @@ module K8y
         @auth = auth
         @connection = Faraday.new(base_path, ssl: ssl) do |connection|
           connection.use(Faraday::Response::RaiseError)
+          FaradaySettings.configure_connection(connection)
           auth.configure_connection(connection)
           yield connection if block_given?
         end

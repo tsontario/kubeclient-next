@@ -6,6 +6,23 @@ For users, this gem is intended to be simple to use, but with enough flexibility
 
 For maintainers, the goal is to provide a highly testable, modular, and loosely coupled design to allow for easy change management and confidence in production worthiness.
 
+## Table of contents
+
+**Basic usage**
+* From a Config file[#from-a-config-file]
+* From in-cluster[#from-in-cluster]
+* Client options[#client-options]
+  * Kubeconfig[#kubeconfig]
+  * Faraday connection settings[#faraday-connection-settings]
+
+**Lower level usage**
+* REST client[#rest-client
+
+**Testing & contributing**
+* Test suite[#test-suite]
+* Contributing[#contributing]
+
+
 # Basic usage
 
 ## From a Config file
@@ -27,6 +44,8 @@ client.get_pods(namespace: "some-namespace")
 ```
 
 ## Client options
+
+### Kubeconfig
 
 By default, `Kubeconfig.from_file` will read the file pointed to by `ENV["KUBECONFIG"]`, but a separate filepath can be provided.
 
@@ -62,7 +81,24 @@ client.get_ingress(namespace: "some-namespace", name: "my-ingress")
 
 If a conflict arises between group versions, a `K8y::Client::APINameConflictError` will be raised when trying to access a duplicate-named resource. **A future feature will allow fine-grained access to client group versions. E.g. `client.api_extensions_v1.get_ingresses**
 
-# Lower-level access
+### Faraday Connection settings
+
+A `K8y::Client::Client` object will maintain a separate `K8y::REST::Connection` for each `GroupVersion` it accesses. Each `K8y::REST::Connection`, in turn, has its own `Faraday::Connection`. `K8y::REST::FaradaySettings` is exposed in order to provide a mechanism to globally configure Faraday settings across all client instances. Use `K8y::REST::FaradaySettings#with_connection` to pass in a block that will be evaluated when new REST clients are built.
+
+```ruby
+# Setting global Faraday::Connection settings
+K8y::REST::FaradaySettings.with_connection do |connection|
+  connection.headers["Foo"] = "Bar"
+  connection.options.timeout = 5 # 5 seconds
+  connection.response :follow_redirects
+end
+```
+
+>Warn: Be aware that `FaradaySettings` are **global** and will be applied to all clients (both `K8y::Client::Client` and `K8y::REST::Client`). You can always call `FaradaySettings#with_connection` again to change the block that will be called when generating future clients.
+
+# Lower-level usage
+
+## REST client
 
 Under the hood, `K8y::Client` makes its requests via a more generic REST client: `K8y::REST::Client`. REST clients can be instantiated much the same as top-level Clients. The `path:` argument will be used as a prefix for all requests made by the client. E.g. given a cluster server of `https://1.2.3.4`, and path `foo`, `rest_client.get("bar")` will make a request to `https://1.2.3.4/foo/bar`
 
@@ -75,7 +111,9 @@ rest_client = K8y::REST::Client.from_config(rest_config)
 rest_client.get("healthz", as: :raw)
 ```
 
-# Testing
+# Testing & contributing
+
+## Test suite*
 
 Basic test suite: `bundle exec rake`
 
@@ -83,6 +121,6 @@ Integration test suite: `bundle exec rake test_integration` (requires a running 
 
 A future goal is to test in-cluster behaviour by running a custom Github action, but that hasn't been done yet.
 
-# Contributing
+## Contributing
 
 Contributions are always welcome!

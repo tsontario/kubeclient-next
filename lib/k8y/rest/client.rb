@@ -6,6 +6,7 @@ require "forwardable"
 
 require_relative "config"
 require_relative "connection"
+require_relative "faraday_settings"
 require_relative "request_wrapper"
 require_relative "response_formatter"
 
