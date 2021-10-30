@@ -9,18 +9,18 @@ For maintainers, the goal is to provide a highly testable, modular, and loosely 
 ## Table of contents
 
 **Basic usage**
-* From a Config file[#from-a-config-file]
-* From in-cluster[#from-in-cluster]
-* Client options[#client-options]
-  * Kubeconfig[#kubeconfig]
-  * Faraday connection settings[#faraday-connection-settings]
+* [From a Config file](#from-a-config-file)
+* [From in-cluster](#from-in-cluster)
+* [Client options](#client-options)
+  * [Kubeconfig](#kubeconfig)
+  * [Faraday connection settings](#faraday-connection-settings)
 
 **Lower level usage**
-* REST client[#rest-client
+* [REST client](#rest-client)
 
 **Testing & contributing**
-* Test suite[#test-suite]
-* Contributing[#contributing]
+* [Test suite](#test-suite)
+* [Contributing](#contributing)
 
 
 # Basic usage
