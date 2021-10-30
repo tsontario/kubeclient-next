@@ -11,6 +11,7 @@ For maintainers, the goal is to provide a highly testable, modular, and loosely 
 [**Basic usage**](#basic-usage)
 * [From a Config file](#from-a-config-file)
 * [From in-cluster](#from-in-cluster)
+* [Token renewal](#token-renewal)
 * [Client options](#client-options)
   * [Kubeconfig](#kubeconfig)
   * [Faraday connection settings](#faraday-connection-settings)
@@ -42,6 +43,10 @@ client = K8y::Client.from_in_cluster
 client.discover!
 client.get_pods(namespace: "some-namespace")
 ```
+
+## Token renewal
+
+If your client connection's authorization is achieved via a generated token (e.g. via an `auth-provider` stanza in your kubeconfig), K8y will automatically attempt to regenerate a new token if it receives a `401 Unauthorized` error. Currently, only GCP [Application Default Credentials](https://github.com/tsontario/k8y/blob/main/lib/k8y/rest/auth/providers/gcp/application_default_provider.rb) and [Command Provider](https://github.com/tsontario/k8y/blob/main/lib/k8y/rest/auth/providers/gcp/command_provider.rb) have been implemented, but more can/will be added as needed.
 
 ## Client options
 
@@ -94,7 +99,7 @@ K8y::REST::FaradaySettings.with_connection do |connection|
 end
 ```
 
->Warn: Be aware that `FaradaySettings` are **global** and will be applied to all clients (both `K8y::Client::Client` and `K8y::REST::Client`). You can always call `FaradaySettings#with_connection` again to change the block that will be called when generating future clients.
+Be aware that `FaradaySettings` are **global** and will be applied to all clients (both `K8y::Client::Client` and `K8y::REST::Client`). You can always call `FaradaySettings#with_connection` again to change the block that will be called when generating future clients.
 
 # Lower-level usage
 
