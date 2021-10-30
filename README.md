@@ -113,7 +113,7 @@ rest_client.get("healthz", as: :raw)
 
 # Testing and contributing
 
-## Test suite*
+## Test suite
 
 Basic test suite: `bundle exec rake`
 
