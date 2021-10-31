@@ -32,7 +32,7 @@ module K8y
 
       def test_create_configmap
         configmap = YAML.load_file(resource_fixture_path("configmap"))
-        create_result = client.create_configmap(name: "test-configmap", namespace: @namespace, data: configmap)
+        create_result = client.create_configmap(name: "test-configmap", namespace: @namespace, body: configmap)
         get_result = client.get_configmap(name: "test-configmap", namespace: @namespace)
         assert_equal(get_result, create_result)
       end
@@ -49,7 +49,7 @@ module K8y
         configmap = client.get_configmap(name: "test-configmap", namespace: @namespace)
         refute(configmap.metadata.annotations)
         configmap.metadata.annotations = { test: "bogus" }
-        result = client.update_configmap(name: "test-configmap", namespace: @namespace, data: configmap.to_h)
+        result = client.update_configmap(name: "test-configmap", namespace: @namespace, body: configmap.to_h)
         assert_equal("bogus", result.metadata.annotations.test)
       end
 
@@ -59,7 +59,7 @@ module K8y
         refute(configmap.data.json_patch)
         patch_data = [{ "op" => "add", "path" => "/data/json_patch", "value" => "test" }]
         result = client.patch_configmap(strategy: :json, name: "test-configmap",
-          namespace: @namespace, data: patch_data)
+          namespace: @namespace, body: patch_data)
         assert_equal("test", result.data.json_patch)
       end
 
@@ -69,7 +69,7 @@ module K8y
         refute(configmap.data.merge_patch)
         patch_data = { data: { merge_patch: "test" } }
         result = client.patch_configmap(strategy: :merge, name: "test-configmap",
-          namespace: @namespace, data: patch_data)
+          namespace: @namespace, body: patch_data)
         assert_equal("test", result.data.merge_patch)
       end
 
@@ -93,7 +93,7 @@ module K8y
           },
         }
         result = client.patch_deployment(name: "busybox", namespace: @namespace,
-          data: patch_data, strategy: :strategic_merge)
+          body: patch_data, strategy: :strategic_merge)
         assert_equal(2, result.spec.template.spec.containers.length)
         assert(result.spec.template.spec.containers.map(&:name).include?("addition"))
       end
@@ -119,7 +119,7 @@ module K8y
           },
         }
         result = client.patch_deployment(name: "busybox", namespace: @namespace,
-          data: patch_data, strategy: :strategic_merge)
+          body: patch_data, strategy: :strategic_merge)
         assert_equal(1, result.spec.template.spec.containers.length)
         assert_equal("replacement", result.spec.template.spec.containers.first.name)
       end
@@ -146,13 +146,13 @@ module K8y
           },
         }
         result = client.patch_deployment(name: "busybox", namespace: @namespace,
-          data: patch_data, strategy: :strategic_merge)
+          body: patch_data, strategy: :strategic_merge)
         refute(result.spec.template.spec.containers.first.ports)
       end
 
       def test_client_raises_argument_error_when_unsupported_patch_strategy_specified
         assert_raises(ArgumentError) do
-          client.patch_configmap(name: "foo", namespace: @namespace, data: { data: { fake: "data" } }, strategy: :fake)
+          client.patch_configmap(name: "foo", namespace: @namespace, body: { data: { fake: "data" } }, strategy: :fake)
         end
       end
     end

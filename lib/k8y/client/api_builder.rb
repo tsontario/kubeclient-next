@@ -19,6 +19,10 @@ module K8y
         update: :define_update_resource,
       }
 
+      GET_RESOURCES_OPTIONS = {
+        label_selector: "labelSelector",
+      }
+
       def initialize(api:, config:, context:)
         super()
         @api = api
@@ -52,11 +56,11 @@ module K8y
         api.instance_eval do
           define_singleton_method(method_name) do |kwargs = {}|
             namespace = kwargs.fetch(:namespace) if resource_description.namespaced
-            data = kwargs.fetch(:data)
+            body = kwargs.fetch(:body)
             headers = kwargs.fetch(:headers, {}).merge(json_content_type)
             as = kwargs.fetch(:as, :ros)
             rest_client.post(resource_description.path_for_resources(namespace: namespace),
-              data: JSON.dump(data), headers: headers, as: as)
+              body: JSON.dump(body), headers: headers, as: as)
           end
           register_method(method_name)
         end
@@ -68,10 +72,8 @@ module K8y
           define_singleton_method(method_name) do |kwargs = {}|
             namespace = kwargs.fetch(:namespace) if resource_description.namespaced
             name = kwargs.fetch(:name)
-            headers = kwargs.fetch(:headers, {})
             as = kwargs.fetch(:as, :ros)
-            rest_client.delete(resource_description.path_for_resource(namespace: namespace, name: name),
-              headers: headers, as: as)
+            rest_client.delete(resource_description.path_for_resource(namespace: namespace, name: name), as: as)
           end
           register_method(method_name)
         end
@@ -98,8 +100,13 @@ module K8y
           define_singleton_method(method_name) do |kwargs = {}|
             namespace = kwargs.fetch(:namespace) if resource_description.namespaced
             headers = kwargs.fetch(:headers, {})
+            params = {}
+            ::K8y::Client::APIBuilder::GET_RESOURCES_OPTIONS.each do |opt, key|
+              params[key] = kwargs[opt] if kwargs[opt]
+            end
             as = kwargs.fetch(:as, :ros)
-            rest_client.get(resource_description.path_for_resources(namespace: namespace), headers: headers, as: as)
+            rest_client.get(resource_description.path_for_resources(namespace: namespace), params: params,
+              headers: headers, as: as)
           end
           register_method(method_name)
         end
@@ -118,12 +125,12 @@ module K8y
           define_singleton_method(method_name) do |kwargs = {}|
             namespace = kwargs.fetch(:namespace) if resource_description.namespaced
             name = kwargs.fetch(:name)
-            data = kwargs.fetch(:data)
+            body = kwargs.fetch(:body)
             strategy = kwargs.fetch(:strategy)
             headers = kwargs.fetch(:headers, {}).merge(scoped_content_type_for_patch_strategy.call(strategy))
             as = kwargs.fetch(:as, :ros)
             rest_client.patch(resource_description.path_for_resource(namespace: namespace, name: name),
-              strategy: strategy, data: JSON.dump(data), headers: headers, as: as)
+              strategy: strategy, body: JSON.dump(body), headers: headers, as: as)
           end
           register_method(method_name)
         end
@@ -142,11 +149,11 @@ module K8y
           api.define_singleton_method(method_name) do |kwargs = {}|
             namespace = kwargs.fetch(:namespace) if resource_description.namespaced
             name = kwargs.fetch(:name)
-            data = kwargs.fetch(:data)
+            body = kwargs.fetch(:body)
             headers = kwargs.fetch(:headers, {}).merge(json_content_type)
             as = kwargs.fetch(:as, :ros)
             rest_client.put(resource_description.path_for_resource(namespace: namespace, name: name),
-              data: JSON.dump(data), headers: headers, as: as)
+              body: JSON.dump(body), headers: headers, as: as)
           end
           register_method(method_name)
         end

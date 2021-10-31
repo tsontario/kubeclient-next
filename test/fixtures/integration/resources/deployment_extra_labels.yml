@@ -2,10 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: busybox
+  name: busybox-extra-labels
   labels:
     name: busybox
     app: busybox
+    extra: labels
 spec:
   replicas: 1
   selector:

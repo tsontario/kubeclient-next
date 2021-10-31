@@ -35,37 +35,37 @@ module K8y
         @request_wrapper = RequestWrapper.new
       end
 
-      def get(path = "", as: :ros)
+      def get(path = "", params: {}, headers: {}, as: :ros)
         with_wrapper do
-          response = connection.get(formatted_uri(path))
+          response = connection.get(formatted_uri(path), params, headers)
           format_response(response, as: as)
         end
       end
 
-      def post(path = "", data:, headers: {}, as: :ros)
+      def post(path = "", body:, headers: {}, as: :ros)
         with_wrapper do
-          response = connection.post(formatted_uri(path), data, headers)
+          response = connection.post(formatted_uri(path), body, headers)
           format_response(response, as: as)
         end
       end
 
-      def put(path = "", data:, headers: {}, as: :ros)
+      def put(path = "", body:, headers: {}, as: :ros)
         with_wrapper do
-          response = connection.put(formatted_uri(path), data, headers)
+          response = connection.put(formatted_uri(path), body, headers)
           format_response(response, as: as)
         end
       end
 
-      def patch(path = "", strategy:, data:, headers: {}, as: :ros)
+      def patch(path = "", strategy:, body:, headers: {}, as: :ros)
         with_wrapper do
-          response = connection.patch(formatted_uri(path), data, headers)
+          response = connection.patch(formatted_uri(path), body, headers)
           format_response(response, as: as)
         end
       end
 
-      def delete(path = "", as: :ros)
+      def delete(path = "", params: {}, headers: {}, as: :ros)
         with_wrapper do
-          response = connection.delete(formatted_uri(path))
+          response = connection.delete(formatted_uri(path), params, headers)
           format_response(response, as: as)
         end
       end
