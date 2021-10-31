@@ -10,7 +10,6 @@ module K8y
       extend Forwardable
 
       attr_reader :base_path, :connection
-      attr_accessor :token_store
 
       VERBS = [:get, :post, :put, :patch, :delete]
       def_delegators(:connection, *VERBS)
