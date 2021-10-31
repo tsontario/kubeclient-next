@@ -61,34 +61,34 @@ module K8y
       def test_post_path
         base_path = "https://1.2.3.4/core/v1/"
         path = "fakeresource"
-        data = { fake: "data" }
+        body = { fake: "data" }
         headers = { "Content-Type" => "application/json" }
         with_client(base_path: base_path) do |client|
           faraday_expectations(client: client, method: :post, path: File.join(base_path, path),
-            data: data, headers: headers)
-          client.post("fakeresource", data: data, headers: headers, as: :raw)
+            body: body, headers: headers)
+          client.post("fakeresource", body: body, headers: headers, as: :raw)
         end
       end
 
       def test_put_path
         path = "fakeresource"
-        data = { fake: "data" }
+        body = { fake: "data" }
         with_client(base_path: "https://1.2.3.4/core/v1/") do |client|
-          faraday_expectations(client: client, method: :put, path: File.join(client.base_path, path), data: data,
+          faraday_expectations(client: client, method: :put, path: File.join(client.base_path, path), body: body,
             headers: {})
-          client.put("fakeresource", data: data, as: :raw)
+          client.put("fakeresource", body: body, as: :raw)
         end
       end
 
       def test_patch_path_json_patch
         base_path = "https://1.2.3.4/core/v1/"
         path = "fakeresource"
-        data = [{ "op" => "add", "path" => "/fake/path", "value" => "test" }]
+        body = [{ "op" => "add", "path" => "/fake/path", "value" => "test" }]
         headers = { "Content-Type" => "application/json-patch+json" }
         with_client(base_path: base_path) do |client|
           faraday_expectations(client: client, method: :patch, path: File.join(base_path, path),
-            data: data, headers: headers)
-          client.patch("fakeresource", strategy: :json, data: data, headers: headers, as: :raw)
+            body: body, headers: headers)
+          client.patch("fakeresource", strategy: :json, body: body, headers: headers, as: :raw)
         end
       end
 
@@ -127,9 +127,14 @@ module K8y
         yield(Client.new(connection: connection))
       end
 
-      def faraday_expectations(client:, method:, path:, returns: nil, **kwargs)
+      def faraday_expectations(client:, method:, path:, body: {}, params: {}, headers: {}, returns: nil)
         target = client.connection.connection
-        target.expects(method).with(path, *kwargs.values).returns(returns)
+        case method
+        when :patch, :post, :put
+          target.expects(method).with(path, body, headers).returns(returns)
+        else
+          target.expects(method).with(path, params, headers).returns(returns)
+        end
       end
 
       def mock_faraday_response
