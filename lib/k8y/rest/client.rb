@@ -35,7 +35,7 @@ module K8y
         @request_wrapper = RequestWrapper.new
       end
 
-      def get(path = "", headers: {}, as: :ros)
+      def get(path = "", as: :ros)
         with_wrapper do
           response = connection.get(formatted_uri(path))
           format_response(response, as: as)
@@ -63,7 +63,7 @@ module K8y
         end
       end
 
-      def delete(path = "", headers: {}, as: :ros)
+      def delete(path = "", as: :ros)
         with_wrapper do
           response = connection.delete(formatted_uri(path))
           format_response(response, as: as)
