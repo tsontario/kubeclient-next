@@ -7,6 +7,10 @@ require "json"
 
 module K8y
   module Client
+    # APIBuilder objects perform the actual client discovery of a provided API. The provided API should
+    # have a path that points to a collection of Kubernetes resources (that is, a valid GroupVersion path).
+    #
+    # APIBuilder should be considered an internal class and its API should _not_ be considered stable.
     class APIBuilder < Module
       attr_reader :api, :config, :context
 
@@ -23,6 +27,14 @@ module K8y
         label_selector: "labelSelector",
       }
 
+      # Creates an APIBuilder object.
+      #
+      # @param [K8y::Client::API] api
+      #   The API object on which to perform discovery.
+      # @param [K8y::Kubeconfig::Config] config
+      #   A Kubeconfig object.
+      # @param [String] context
+      #   The Kubernetes context name.
       def initialize(api:, config:, context:)
         super()
         @api = api
@@ -30,6 +42,7 @@ module K8y
         @context = context
       end
 
+      # Performs discovery and dynamically creates client methods on @api.
       def build!
         rest_config = REST::Config.from_kubeconfig(config, context: context, path: api.path)
         rest_client = REST::Client.new(connection: REST::Connection.from_config(rest_config))
