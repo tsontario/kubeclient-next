@@ -3,6 +3,7 @@
 require_relative "kubeconfig/config"
 
 module K8y
+  # The Kubeconfig module is an abstraction of a Kubeconfig file.
   module Kubeconfig
     Error = Class.new(Error)
     NotInClusterError = Class.new(Error)
@@ -12,11 +13,19 @@ module K8y
     TOKEN_FILE = "/var/run/secrets/kubernetes.io/serviceaccount/token"
     ROOT_CA_FILE = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
 
+    # Creates a Kubeconfig from a file. Note that any IO object can be used, not only File.
+    #
+    # @param [IO] file
+    #   A file containing a Kubeconfig.
+    # @return [K8y::Kubeconfig::Config]
     def self.from_file(file = File.open(ENV["KUBECONFIG"]))
       hash = YAML.safe_load(file.read, permitted_classes: [Date, Time])
       Config.from_hash(hash)
     end
 
+    # Creates a Kubeconfig from in-cluster parameters
+    #
+    # @return [K8y::Kubeconfig::Config]
     def self.in_cluster_config
       host = ENV.fetch("KUBERNETES_SERVICE_HOST", nil)
       port = ENV.fetch("KUBERNETES_SERVICE_PORT", nil)
